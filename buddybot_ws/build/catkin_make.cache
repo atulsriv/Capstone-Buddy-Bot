@@ -1,2 +1,0 @@
-
--DCATKIN_DEVEL_PREFIX=/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/devel -DCMAKE_INSTALL_PREFIX=/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/install -G Unix Makefiles
