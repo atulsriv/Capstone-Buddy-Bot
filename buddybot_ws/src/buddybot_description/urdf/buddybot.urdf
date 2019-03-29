@@ -97,17 +97,17 @@
     </inertial>
   </link>
 
-  <joint name="bar_to_front_wheel_L" type="continuous">
+  <joint name="bar_to_front_wheel_L" type="fixed">
     <parent link="front_wheel_bar"/>
     <child link="left_wheel"/>
-    <axis xyz="0 1 0"/>
+    <!--<axis xyz="0 1 0"/>-->
     <origin xyz="0 0.34 -.08"/>
   </joint>
 
-  <joint name="bar_to_front_wheel_R" type="continuous">
+  <joint name="bar_to_front_wheel_R" type="fixed">
     <parent link="front_wheel_bar"/>
     <child link="right_wheel"/>
-    <axis xyz="0 1 0"/>
+    <!--<axis xyz="0 1 0"/>-->
     <origin xyz="0 -0.34 -.08"/>
   </joint>
 
