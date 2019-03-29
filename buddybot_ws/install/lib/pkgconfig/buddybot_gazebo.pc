@@ -1,8 +1,0 @@
-prefix=/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/install
-
-Name: buddybot_gazebo
-Description: Description of buddybot_gazebo
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/install/lib 
-Requires: 
