@@ -31,6 +31,11 @@
         <box size=".6096 .4572 .3072"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+    
   </link>
 
   <link name = "front_wheel_bar">
@@ -46,6 +51,10 @@
         <box size = ".1 .67 .14"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <joint name = 'base_to_front_wheel_bar' type = 'fixed'>
@@ -82,6 +91,10 @@
         <cylinder length="0.1" radius="0.095"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <joint name="bar_to_front_wheel_L" type="continuous">
@@ -111,6 +124,10 @@
         <box size = ".1 .1 .14"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <joint name = 'base_to_back_wheel_bar' type = 'fixed'>
@@ -132,6 +149,10 @@
         <cylinder length="0.1" radius="0.095"/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <joint name="back_bar_to_back_wheel" type="continuous">
@@ -164,6 +185,10 @@
         <box size = '.03 .03 .42'/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <joint name="base_to_lidar_mount" type="fixed">
@@ -185,6 +210,10 @@
         <cylinder length = '.03' radius = '.04'/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <joint name = 'lidar_to_mount' type="fixed">
@@ -206,6 +235,10 @@
         <box size = '.03 .03 .35'/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <link name = 'front_left_top'>
@@ -221,6 +254,10 @@
         <box size = '.03 .03 .35'/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <link name = 'front_right_bottom'>
@@ -236,6 +273,10 @@
         <box size = '.03 .03 .1677'/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <link name = 'front_left_bottom'>
@@ -251,6 +292,10 @@
         <box size = '.03 .03 .1677'/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <link name = 'front_connector'>
@@ -266,6 +311,10 @@
         <box size = '.03 .03 .4572'/>
       </geometry>
     </collision>
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
   </link>
 
   <joint name = 'F_R_T_to_base' type = 'fixed'>
@@ -299,13 +348,12 @@
   </joint>
 
    <!-- Gazebo plugin for ROS Control -->
-  <!--
+
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <robotNamespace>/</robotNamespace>
       <legacyModeNS>true</legacyModeNS>
     </plugin>
   </gazebo>
-  -->
 
 </robot>

@@ -1,0 +1,8 @@
+prefix=/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/install
+
+Name: remote-control
+Description: Description of remote-control
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/install/lib 
+Requires: 
