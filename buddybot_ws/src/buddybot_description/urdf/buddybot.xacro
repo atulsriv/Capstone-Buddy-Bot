@@ -24,6 +24,9 @@
 
 
   <link name="base_link">
+  </link>
+
+  <link name="body">
     <visual>
       <geometry>
         <box size=".6096 .4572 .3072"/>
@@ -37,11 +40,16 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="1"/>
+      <mass value="10"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
-    
   </link>
+
+  <joint name = 'base_link_to_body' type = 'fixed'>
+    <parent link = 'base_link'/>
+    <child link = 'body'/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
 
   <link name = "front_wheel_bar">
     <visual>
@@ -114,6 +122,7 @@
     <axis xyz="0 1 0"/>
     <origin xyz="0 0.34 -.08"/>
     <dynamics damping="0.7"/>
+    <!--<pid p="100.0" i="0.0" d="10.0">-->
   </joint>
 
   <transmission name="left_wheel_trans">
@@ -144,6 +153,7 @@
     <axis xyz="0 1 0"/>
     <origin xyz="0 -0.34 -.08"/>
     <dynamics damping="0.7"/>
+    <!--<pid p="100.0" i="0.0" d="10.0">-->
   </joint>
 
   <link name = "back_wheel_bar">
@@ -199,14 +209,15 @@
     <dynamics damping="0.7"/>
   </joint>
 
-  <transmission name="back_wheel_turn">
+  <transmission name="back_wheel_trans">
     <type>transmission_interface/SimpleTransmission</type>
-    <actuator name="$back_wheel_axis">
+    <joint name="back_bar_to_back_wheel">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_back">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
-    <joint name="back_bar_to_back_wheel">
-      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
-    </joint>
   </transmission>
 
   <link name = 'lidar_mount'>

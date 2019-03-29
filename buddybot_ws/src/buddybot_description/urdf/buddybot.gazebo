@@ -22,9 +22,16 @@
     <kd value="1.0" />
   </gazebo>
 
+  <gazebo reference="back_wheel">
+    <mu1 value="200.0"/>
+    <mu2 value="100.0"/>
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+  </gazebo>
+
   <!-- hokuyo -->
   <gazebo reference="hokuyo_link">
-    <sensor type="gpu_ray" name="head_hokuyo_sensor">
+    <sensor type="ray" name="head_hokuyo_sensor">
       <pose>0 0 0 0 0 0</pose>
       <visualize>false</visualize>
       <update_rate>40</update_rate>
@@ -33,8 +40,8 @@
           <horizontal>
             <samples>720</samples>
             <resolution>1</resolution>
-            <min_angle>-1.570796</min_angle>
-            <max_angle>1.570796</max_angle>
+            <min_angle>-3.13</min_angle>
+            <max_angle>3.14</max_angle>
           </horizontal>
         </scan>
         <range>
@@ -52,7 +59,7 @@
           <stddev>0.01</stddev>
         </noise>
       </ray>
-      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
         <topicName>/buddybot/laser/scan</topicName>
         <frameName>hokuyo_link</frameName>
       </plugin>
