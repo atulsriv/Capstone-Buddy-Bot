@@ -128,10 +128,10 @@
   <transmission name="left_wheel_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="bar_to_front_wheel_L">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_left">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -139,10 +139,10 @@
   <transmission name="right_wheel_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="bar_to_front_wheel_R">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_right">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -250,7 +250,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-	<box size="0.1 0.1 0.1"/>
+				<box size="0.1 0.1 0.1"/>
       </geometry>
     </collision>
 
@@ -267,12 +267,6 @@
       <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
     </inertial>
   </link>
-
-  <joint name = 'lidar_to_mount' type="fixed">
-    <parent link="lidar_mount"/>
-    <child link="hokuyo_link"/>
-    <origin xyz="0 0 0"/>
-  </joint>
 
   <link name = 'front_right_top'>
     <visual>
@@ -368,6 +362,41 @@
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
+
+  <!-- Realsense -->
+  <link name="realsense">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+				<box size="0.073000 0.276000 0.072000"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://buddybot_description/meshes/kinect.dae"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="0.1" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="9.108e-05" ixy="0.0" ixz="0.0" iyy="2.51e-06" iyz="0.0" izz="8.931e-05"/>
+		</inertial>
+  </link>
+
+  <joint name = 'camera_to_body' type="fixed">
+    <parent link="base_link"/>
+    <child link="hokuyo_link"/>
+    <origin xyz="0 0 .1886"/>
+  </joint>
+
+  <joint name = 'lidar_to_mount' type="fixed">
+    <parent link="lidar_mount"/>
+    <child link="realsense"/>
+    <origin xyz=".04 0 .032"/>
+  </joint>
 
   <joint name = 'F_R_T_to_base' type = 'fixed'>
     <parent link="base_link"/>

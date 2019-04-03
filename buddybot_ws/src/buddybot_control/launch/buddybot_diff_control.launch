@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <param name="robot_description" command="cat '$(find buddybot_description)/urdf/buddybot.xacro'" />
+          
+    <rosparam file="$(find buddybot_control)/config/buddybot_diff_drive_contorl.yaml" command="load" />
+    
+    <node name="buddybot_controller_manager" pkg="controller_manager" type="spawner"          respawn="false" output="screen" args="mobile_base_controller" />
+               
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+    <remap from="/joint_states" to="/buddybot/joint_states" />
+  </node>
+
+</launch>
