@@ -7,25 +7,15 @@
     </plugin>
   </gazebo>
 
+
   <gazebo reference="left_wheel">
     <mu1 value="200.0"/>
     <mu2 value="100.0"/>
-    <kp value="10000000.0" />
-    <kd value="1.0" />
   </gazebo>
 
   <gazebo reference="right_wheel">
     <mu1 value="200.0"/>
     <mu2 value="100.0"/>
-    <kp value="10000000.0" />
-    <kd value="1.0" />
-  </gazebo>
-
-  <gazebo reference="back_wheel">
-    <mu1 value="200.0"/>
-    <mu2 value="100.0"/>
-    <kp value="10000000.0" />
-    <kd value="1.0" />
   </gazebo>
 
   <!-- hokuyo -->
@@ -80,18 +70,18 @@
           <far>10</far>
         </clip>
       </camera>
-			<plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+      <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
         <baseline>0.2</baseline>
         <alwaysOn>true</alwaysOn>
         <!-- Keep this zero, update_rate in the parent <sensor> tag
           will control the frame rate. -->
         <updateRate>0.0</updateRate>
-        <cameraName>camera_ir</cameraName>
-        <imageTopicName>/camera/depth/image_raw</imageTopicName>
-        <cameraInfoTopicName>/camera/depth/camera_info</cameraInfoTopicName>
-        <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
-        <depthImageInfoTopicName>/camera/depth/camera_info</depthImageInfoTopicName>
-        <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
+        <cameraName>buddybot</cameraName>
+        <imageTopicName>/buddybot/depth/image_raw</imageTopicName>
+        <cameraInfoTopicName>/buddybot/depth/camera_info</cameraInfoTopicName>
+        <depthImageTopicName>/buddybot/depth/image_raw</depthImageTopicName>
+        <depthImageInfoTopicName>/buddybot/depth/camera_info</depthImageInfoTopicName>
+        <pointCloudTopicName>/buddybot/depth/points</pointCloudTopicName>
         <frameName>base_link</frameName>
         <pointCloudCutoff>0.05</pointCloudCutoff>
         <distortionK1>0</distortionK1>

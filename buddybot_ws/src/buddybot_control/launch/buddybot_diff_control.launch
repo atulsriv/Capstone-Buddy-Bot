@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
           
-    <rosparam file="$(find buddybot_control)/config/buddybot_diff_drive_contorl.yaml" command="load" />
+    <rosparam file="$(find buddybot_control)/config/buddybot_diff_drive_control.yaml" command="load" />
     
-    <node name="buddybot_controller_manager" pkg="controller_manager" type="spawner"          respawn="false" output="screen" args="mobile_base_controller" />
+    <node name="buddybot_controller_manager" pkg="controller_manager" type="spawner"          respawn="false" ns="/" output="screen" args="joint_state_controller diff_controller" />
                
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">

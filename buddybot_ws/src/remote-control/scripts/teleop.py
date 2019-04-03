@@ -8,7 +8,7 @@ if os.name == 'nt':
 else:
   import tty, termios
 
-NAVI_MAX_LIN_VEL = 0.25
+NAVI_MAX_LIN_VEL = 5.0
 NAVI_MAX_ANG_VEL = 2.5
 
 LIN_VEL_STEP_SIZE = 0.01
@@ -83,7 +83,7 @@ if __name__=="__main__":
         settings = termios.tcgetattr(sys.stdin)
 
     rospy.init_node('teleop')
-    pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+    pub = rospy.Publisher('/diff_controller/cmd_vel', Twist, queue_size=10)
 
     status = 0
     target_linear_vel   = 0.0

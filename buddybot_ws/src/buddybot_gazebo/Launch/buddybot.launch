@@ -1,4 +1,6 @@
 <launch>
+  
+  <rosparam file="$(find buddybot_gazebo)/config/gazebo_params.yaml" command="load"/>
 
   <param name="robot_description"
     command="$(find xacro)/xacro --inorder '$(find buddybot_description)/urdf/buddybot.xacro'" />
