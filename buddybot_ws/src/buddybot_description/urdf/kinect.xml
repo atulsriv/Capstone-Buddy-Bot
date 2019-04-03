@@ -1,0 +1,31 @@
+
+
+  <link name="camera_link">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+        iyy="0.001" iyz="0.0"
+        izz="0.001" />
+    </inertial>
+
+    <visual>
+      <origin xyz=" 0 0 0 " rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://kinect_description/meshes/kinect.dae"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.0730 .2760 0.0720"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name = 'kinect_to_body' type="fixed">
+    <parent link="body"/>
+    <child link="camera_link"/>
+    <origin xyz="0 0 1"/>
+  </joint>
