@@ -125,24 +125,22 @@
     <!--<pid p="100.0" i="0.0" d="10.0">-->
   </joint>
 
-  <transmission name="left_wheel_trans">
+  <transmission name="left_wheel_trans" type="SimpleTransmission">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="bar_to_front_wheel_L">
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_left">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
 
-  <transmission name="right_wheel_trans">
+  <transmission name="right_wheel_trans" type="SimpleTransmission">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="bar_to_front_wheel_R">
       <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_right">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -209,13 +207,12 @@
     <dynamics damping="0.7"/>
   </joint>
 
-  <transmission name="back_wheel_trans">
+  <transmission name="back_wheel_trans" type="SimpleTransmission">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="back_bar_to_back_wheel">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor_back">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>

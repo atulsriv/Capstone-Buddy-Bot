@@ -60,7 +60,7 @@
       </ray>
       <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
         <topicName>/buddybot/laser/scan</topicName>
-        <frameName>hokuyo_link</frameName>
+        <frameName>base_link</frameName>
       </plugin>
     </sensor>
   </gazebo>
@@ -76,8 +76,8 @@
           <format>R8G8B8</format>
         </image>
         <clip>
-          <near>0.05</near>
-          <far>3</far>
+          <near>0.2</near>
+          <far>10</far>
         </clip>
       </camera>
 			<plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
@@ -92,7 +92,7 @@
         <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
         <depthImageInfoTopicName>/camera/depth/camera_info</depthImageInfoTopicName>
         <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
-        <frameName>camera_link</frameName>
+        <frameName>base_link</frameName>
         <pointCloudCutoff>0.05</pointCloudCutoff>
         <distortionK1>0</distortionK1>
         <distortionK2>0</distortionK2>

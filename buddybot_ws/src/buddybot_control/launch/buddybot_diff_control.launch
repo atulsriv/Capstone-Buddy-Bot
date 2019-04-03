@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-    <param name="robot_description" command="cat '$(find buddybot_description)/urdf/buddybot.xacro'" />
           
     <rosparam file="$(find buddybot_control)/config/buddybot_diff_drive_contorl.yaml" command="load" />
     

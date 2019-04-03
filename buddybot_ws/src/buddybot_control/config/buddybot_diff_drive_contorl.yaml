@@ -12,7 +12,7 @@ mobile_base_controller:
   wheel_separation : .67
  
   # Base frame_id
-  base_frame_id: base_footprint #default: base_link
+  base_frame_id: base_link
  
   # Velocity and acceleration limits
   # Whenever a min_* is unspecified, default to -max_*
