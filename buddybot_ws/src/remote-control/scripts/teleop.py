@@ -9,7 +9,7 @@ else:
   import tty, termios
 
 NAVI_MAX_LIN_VEL = 5.0
-NAVI_MAX_ANG_VEL = 2.5
+NAVI_MAX_ANG_VEL = 5.0
 
 LIN_VEL_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.1
