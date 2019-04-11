@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   joint_limits_interface
   roscpp
 )
+find_package(Boost REQUIRED COMPONENTS asio)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
