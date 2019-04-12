@@ -23,4 +23,4 @@ diff_controller:
       has_velocity_limits    : true
       max_velocity           : 5.0   # rad/s
       has_acceleration_limits: true
-      max_acceleration       : 6.0   # rad/s^2
+      max_acceleration       : 3.0   # rad/s^2
