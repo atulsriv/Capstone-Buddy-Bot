@@ -2,8 +2,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/serial_port.hpp>
 
-#include <iostream>
-
+#include <ros/console.h>
 using namespace boost;
 
 void buddybot_robot::moveWheels(double leftSpeed, double rightSpeed) {
@@ -31,5 +30,5 @@ void buddybot_robot::moveWheels(double leftSpeed, double rightSpeed) {
  
 	port.close();
 */
-	std::cout << "I CALLED MOVE WHEELS FUNCTION" << std::endl;
+	ROS_DEBUG("THIS TEST WORKED");
 }
