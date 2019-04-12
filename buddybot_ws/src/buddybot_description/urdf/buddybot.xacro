@@ -180,31 +180,64 @@
     <origin xyz = '-.28 0 -.2'/>
   </joint>
 
-  <link name="back_wheel">
+  <link name="back_wheel_roller">
     <visual>
       <geometry>
-        <cylinder length="0.1" radius="0.095"/>
+        <cylinder length="0.005" radius="0.005"/>
       </geometry>
-      <origin rpy="-1.6 0 0" xyz="-0.1 0 0"/>
-      <material name="black"/>
+      <origin rpy="-1.6 0 0" xyz="-0 .12 .12"/>
+      <material name="cyan"/>
     </visual>
+
     <collision>
       <geometry>
-        <cylinder length="0.1" radius="0.095"/>
+        <cylinder length="0.1" radius="0.005"/>
       </geometry>
-      <origin rpy="-1.6 0 0" xyz="-0.1 0 0"/>
+      <origin rpy="-1.6 0 0" xyz="-0 0 0"/>
     </collision>
+
+    <inertial>
+      <mass value="1"/>
+      <inertia ixx="0.0001458" ixy="0.0" ixz="0.0" iyy="0.0001458" iyz="0.0" izz="0.00001458"/>
+    </inertial>
+
+  </link>
+
+  <joint name="back_bar_to_back_wheel_roller" type="continuous">
+    <parent link="back_wheel_bar"/>
+    <child link="back_wheel_roller"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="-0.15 0 -.07"/>
+  </joint>
+
+  <link name="back_wheel">
+
+    <visual>
+      <geometry>
+        <cylinder length="0.06" radius="0.095"/>
+      </geometry>
+      <origin rpy="-1.6 0 0" xyz="-0 0 0"/>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <cylinder length="0.06" radius="0.095"/>
+      </geometry>
+      <origin rpy="-1.6 0 0" xyz="-0 0 0"/>
+    </collision>
+
     <inertial>
       <mass value="3"/>
       <inertia ixx="0.0092687" ixy="0.0" ixz="0.0" iyy="0.0092687" iyz="0.0" izz="0.0022563"/>
     </inertial>
   </link>
 
-  <joint name="back_bar_to_back_wheel" type="continuous">
-    <parent link="back_wheel_bar"/>
+  <joint name="back_wheel_roller_to_back_wheel" type="continuous">
+    <parent link="back_wheel_roller"/>
     <child link="back_wheel"/>
-    <axis xyz="0 0 1"/>
-    <origin xyz="0 0 -.08"/>
+    <axis xyz="0 1 0"/>
+    <origin xyz="0 0 0"/>
   </joint>
 
 
