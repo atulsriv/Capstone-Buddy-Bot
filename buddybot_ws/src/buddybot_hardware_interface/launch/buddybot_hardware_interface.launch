@@ -15,4 +15,6 @@
     </node>
     -->
 
+<env name="ROSCONSOLE_CONFIG_FILE" value="$(find buddybot_hardware_interface)/launch/custom_rosconsole.conf"/>
+
 </launch>

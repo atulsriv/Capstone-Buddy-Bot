@@ -8,5 +8,6 @@ int main(int argc, char** argv)
     spinner.start();
     buddybot_hardware_interface::buddybotHardwareInterface buddybot(nh);
     ros::spin();
+    ROS_DEBUG("THIS TEST WORKED");
     return 0;
 }
