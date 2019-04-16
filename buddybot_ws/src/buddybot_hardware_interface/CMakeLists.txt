@@ -201,7 +201,7 @@ include_directories(
 # catkin_add_nosetests(test)
 
 
-add_executable(${PROJECT_NAME}_node src/buddybot_hardware_interface_node.cpp src/buddybot_hardware_interface.cpp src/buddybot_control.cpp)
+add_executable(${PROJECT_NAME}_node src/buddybot_hardware_interface_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
  add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
 

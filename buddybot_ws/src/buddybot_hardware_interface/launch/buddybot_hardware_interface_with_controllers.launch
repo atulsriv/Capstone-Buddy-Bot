@@ -1,17 +1,18 @@
 <launch>
+    
+    <node name="buddybot_hardware_interface" pkg="buddybot_hardware_interface" type="buddybot_hardware_interface_node" output="screen" />
+
+
     <rosparam file="$(find buddybot_hardware_interface)/config/hardware.yaml" command="load"/>
     <rosparam file="$(find buddybot_control)/config/buddybot_diff_drive_control.yaml" command="load"/>
     <rosparam file="$(find buddybot_hardware_interface)/config/joint_limits.yaml" command="load"/>
 
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller diff_controller"/>
 
-    <node name="buddybot_hardware_interface" pkg="buddybot_hardware_interface" type="buddybot_hardware_interface_node" output="screen"/>
 
-    <!--
-    <node name="buddybot_controller_manager" pkg="controller_manager" type="spawner" respawn="false" ns="/" output="screen" args="joint_state_controller diff_controller" />
-
+ 
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
 
     <remap from="/joint_states" to="/buddybot/joint_states" />
     </node>
-    -->
 </launch>
