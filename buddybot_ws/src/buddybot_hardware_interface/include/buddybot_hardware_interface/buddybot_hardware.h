@@ -58,29 +58,37 @@ class buddybotHardware : public hardware_interface::RobotHW
         void write() {
             // Left and Right Speed come in as rad/sec in the range of 0 to 5 m/s
 
+            int leftSpeed = (int)joint_velocity_command_[0];
+            int rightSpeed = (int) joint_velocity_command_[1];
+
+            if (leftSpeed > 40) leftSpeed = 40;
+            if (leftSpeed < -40) leftSpeed = -40;
+            if (rightSpeed > 40) rightSpeed = 40;
+            if (rightSpeed < -40) rightSpeed = -40;
+
+
             // The arduino motor driver accepts speeds from 0 to 100, but we dont 
             // want to run at max speed, so a limit of 50 will be applied
 
-            /*
-                asio::io_service io;
-                asio::serial_port port(io);
-             
-                port.open("/dev/ttyACM0");
-                port.set_option(asio::serial_port_base::baud_rate(57600));
-             
-                char toWrie [30];
+            
+            asio::io_service io;
+            asio::serial_port port(io);
+         
+            port.open("/dev/ttyACM0");
+            port.set_option(asio::serial_port_base::baud_rate(57600));
+         
+            char toWrie [30];
 
-                // Create write string to arduino, multiply speed by 10 and convert to int
-                int n = sprintf (toWrite, "[%d,%d]\n", (int) (10* leftSpeed), (int) (10* rightSpeed));
-             
-                // Read 1 character into c, this will block
-                // forever if no character arrives.
-                asio::write(port, asio::buffer(&toWrite, n));
-             
-                port.close();
-            */
-            double leftSpeed = joint_velocity_command_[0];
-            double rightSpeed = joint_velocity_command_[1];
+            // Create write string to arduino, multiply speed by 10 and convert to int
+            int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+         
+            // Read 1 character into c, this will block
+            // forever if no character arrives.
+            asio::write(port, asio::buffer(&toWrite, n));
+         
+            port.close();
+            
+            /*
 
             char toWrite [100];
 
@@ -91,6 +99,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             myfile.open ("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");
             myfile << toWrite << std::endl;
             myfile.close();
+            */
         }
 
     protected:

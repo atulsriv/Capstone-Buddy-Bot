@@ -1,5 +1,8 @@
 <launch>
     
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find buddybot_description)/urdf/buddybot.xacro'" />
+
+
     <node name="buddybot_hardware_interface" pkg="buddybot_hardware_interface" type="buddybot_hardware_interface_node" output="screen" />
 
 
