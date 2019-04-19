@@ -42,6 +42,7 @@ void setup() {
   Serial.begin(57600);
   lasttime = millis();
   softstop = millis();
+  Serial.print("Ready!");
 }
 
 void loop() 
@@ -49,6 +50,7 @@ void loop()
   readSerial();
   ramp();
   moveMotor();
+  printSerial();
   delay(50);
 }
 
@@ -109,6 +111,12 @@ void moveMotor()
 {
   leftMotor.Set(-1*leftVel);
   rightMotor.Set(rightVel);
-
 }
 
+void printSerial() {
+  if(leftVel!= 0 && rightVel!=0){
+  Serial.write(leftVel);
+  Serial.write(rightVel);
+  Serial.write("\n");
+  }
+}
