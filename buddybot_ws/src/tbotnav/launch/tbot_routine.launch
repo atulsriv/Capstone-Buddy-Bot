@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch"/>
+    <node name="get_hand_gestures" pkg="tbotnav" type="get_hand_gestures.py" />    
+    
+
+</launch>
