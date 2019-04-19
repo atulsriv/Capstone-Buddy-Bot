@@ -16,12 +16,12 @@ buddybot:
     linear:
       x:
         has_velocity_limits    : true
-        max_velocity           : 10.0   # m/s
+        max_velocity           : 15.0   # m/s
         has_acceleration_limits: true
         max_acceleration       : 5.0   # m/s^2
     angular:
       z:
         has_velocity_limits    : true
-        max_velocity           : 12.0   # rad/s
+        max_velocity           : 20.0   # rad/s
         has_acceleration_limits: true
         max_acceleration       : 5.0   # rad/s^2
