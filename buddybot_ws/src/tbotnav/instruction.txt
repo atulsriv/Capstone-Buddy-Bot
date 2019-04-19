@@ -1,0 +1,22 @@
+
+	1)roslaunch tbotnav tbot_routine.launch
+		// also launches realsense2 camera , rs_camera.launch
+			// it runs get_hand_gestures.py and finger_recognizer.py
+			// initilaizes node get_hand_gestures
+			// subscribes to /camera/depth/image_rect_raw
+			// publishes to num_fingers
+
+	2)run turtlebot world
+		export TURTLEBOT3_MODEL=waffle_pi
+		roslaunch turtlebot3_gazebo turtlebot3_world.launch
+
+	3)listen to the num_fingers data
+		rostopic echo /num_fingers
+
+	4)run the file connecting to the turtlebot
+		// initializes node handgest_control
+			//subscribes to num_fingers
+			// published to cmd_vel
+
+		rosrun tbotnav move_to_pose.py
+

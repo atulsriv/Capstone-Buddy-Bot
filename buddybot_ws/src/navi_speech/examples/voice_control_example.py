@@ -3,6 +3,7 @@ import rospy
 
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
+from threading import Thread
 
 import sys, select, os
 if os.name == 'nt':
@@ -16,11 +17,11 @@ NAVI_MAX_ANG_VEL = 5.0
 LIN_VEL_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.1
 
-status = 0
 target_linear_vel   = 3.0
 target_angular_vel  = 0.0
 control_linear_vel  = 3.0
 control_angular_vel = 0.0
+
 
 def vels(target_linear_vel, target_angular_vel):
     return "currently:\tlinear vel %s\t angular vel %s " % (target_linear_vel,target_angular_vel)
@@ -52,40 +53,49 @@ def checkAngularLimitVelocity(vel):
     return constrain(vel, -NAVI_MAX_ANG_VEL, NAVI_MAX_ANG_VEL)
 
 
+
 class ASRControl(object):
     """Class to handle turtlebot simulation control using voice"""
 
+
+
     def __init__(self):
+        
 	
 	print("hello")
 
+        self.speed = 0.2
 
-        # Default values for turtlebot_simulator
-        # self.speed = 0.2
         # Intializing message type
-        # self.msg = Twist()
+        self.msg = Twist()
 
         # initialize node
         rospy.init_node("asr_control")
         rospy.on_shutdown(self.shutdown)
 
-        # Initializing publisher with buffer size of 10 messages
-        # self.pub_ = rospy.Publisher("/diff_controller/cmd_vel", Twist, queue_size=10)
-        
         # Subscribe to kws output
         rospy.Subscriber("kws_data", String, self.parse_asr_result)
+        rospy.sleep(0.1)
         rospy.spin()
+    
 
     def parse_asr_result(self, detected_words): #pylint: disable=too-many-branches
-        
-        
+        global target_linear_vel
+        global target_angular_vel
+        global control_linear_vel
+        global control_angular_vel
+
         """Function to perform action on detected word"""
-    	print("detected words", detected_words.data)
+        print("Detected Word: ", detected_words.data)
 
+        current_word = detected_words.data
+
+        
+
+        # while(detected_words.data == current_word):
         if detected_words.data.find("full speed") > -1:
+            print('fs')
             target_linear_vel = checkLinearLimitVelocity(target_linear_vel + NAVI_MAX_LIN_VEL)
-
-            print(target_linear_vel)
             
             twist = Twist()
 
@@ -94,59 +104,84 @@ class ASRControl(object):
 
             control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
             twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = control_angular_vel
-            print(target_linear_vel)
+            
             pub.publish(twist)
-            print("test: " + str(target_linear_vel))
- #    elif detected_words.data.find("half speed") > -1:
- #        if self.speed == 0.4:
- #            self.msg.linear.x = self.msg.linear.x / 2
- #            self.msg.angular.z = self.msg.angular.z / 2
- #            self.speed = 0.2
- #    elif detected_words.data.find("forward") > -1:
- #        self.msg.linear.x = self.speed
- #        self.msg.angular.z = 0
- #    elif detected_words.data.find("left") > -1:
- #        if self.msg.linear.x != 0:
- #            if self.msg.angular.z < self.speed:
- #                self.msg.angular.z -= 0.75
- #        else:
- #            self.msg.angular.z = self.speed * 2
- #    elif detected_words.data.find("right") > -1:
- #    print("right")
- #        if self.msg.linear.x != 0:
- #            if self.msg.angular.z > -self.speed:
- #                self.msg.angular.z += 0.75
- #        else:
- #            self.msg.angular.z = -self.speed * 2
- #    elif detected_words.data.find("back") > -1:
- #        self.msg.linear.x = -self.speed
- #        self.msg.angular.z = 0
- #    elif detected_words.data.find("stop") > -1 or detected_words.data.find("halt") > -1:
- #        self.msg = Twist()
-	# elif detected_words.data.find("pop") > -1:
- #        self.msg.angular.z = 0
-	#     print("straighten out")
 
-    # Publish required message
-        
+        elif detected_words.data.find("half speed") > -1:
+            print('hs')
+            
+            twist = Twist()
+
+            control_linear_vel = makeSimpleProfile(control_linear_vel, target_linear_vel, (LIN_VEL_STEP_SIZE/2.0))
+            twist.linear.x = 2.5; twist.linear.y = 0.0; twist.linear.z = 0.0
+
+            control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
+            twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = control_angular_vel
+            
+            pub.publish(twist)
+
+
+
+        elif detected_words.data.find("forward") > -1:
+            print("forward")
+            twist = Twist()
+
+            twist.linear.x = 0.2
+
+            twist.angular.z = 0
+            pub.publish(twist)
+
+
+        elif detected_words.data.find("left") > -1:
+            twist = Twist()
+            print("i'm inside while and this is left")
+            target_angular_vel = checkAngularLimitVelocity(target_angular_vel + ANG_VEL_STEP_SIZE)
+            pub.publish(twist)
+
+        elif detected_words.data.find("right") > -1:
+            print("HI im inside while and this is right")
+            twist = Twist()
+            target_angular_vel = checkAngularLimitVelocity(target_angular_vel - ANG_VEL_STEP_SIZE)
+            pub.publish(twist)
+
+        elif detected_words.data.find("back") > -1:
+            twist = Twist()
+            print("HI im inside while and this is back")
+            target_angular_vel = checkAngularLimitVelocity(target_angular_vel - ANG_VEL_STEP_SIZE)
+            print vels(target_linear_vel,target_angular_vel)
+            pub.publish(twist)
+
+        elif detected_words.data.find("stop") > -1 or detected_words.data.find("halt") > -1:
+            twist = Twist()
+            target_linear_vel   = 0.0
+            control_linear_vel  = 0.0
+            target_angular_vel  = 0.0
+            control_angular_vel = 0.0
+            print vels(target_linear_vel, target_angular_vel)
+            pub.publish(twist)
+
+
+    	else:
+            print("End of reading")
 
     def shutdown(self):
         """
         command executed after Ctrl+C is pressed
         """
-        rospy.loginfo("Stop ASRControl")
+        rospy.loginfo("Stopping ASRControl")
+
+        twist = Twist()
+        twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
+        twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
         pub.publish(twist)
         rospy.sleep(1)
 
 
 if __name__ == "__main__":
-    print('im in')
-
-    if os.name != 'nt':
-        settings = termios.tcgetattr(sys.stdin)
+    print('ASRControl Started')
 
     rospy.init_node('asr_control')
     pub = rospy.Publisher('/diff_controller/cmd_vel', Twist, queue_size=10)
 
     ASRControl()
-    print('im out')
+    print('Done...')
