@@ -39,10 +39,10 @@ void setup() {
   leftMotor.Set(0); //SET INITIAL MOTOR VALUES TO ZERO
   rightMotor.Set(0); //(100 MAX FORWARD, -100 MAX BACK)
   
-  Serial.begin(9600);
+  Serial.begin(57600);
   lasttime = millis();
   softstop = millis();
-  Serial.print("Ready!");
+  //Serial.print("Ready!");
 }
 
 void loop() 
@@ -65,8 +65,6 @@ void readSerial()
       memmove(buf,&buf[strlen(buf) - safesize],safesize);
       buf[safesize] = '\0';
     }
-    Serial.write(buf);
-    Serial.write("Buffer Read");
     char *s, *e;
     if ((e = strchr(buf, '\n')))
     {
@@ -76,10 +74,6 @@ void readSerial()
         sscanf(s, "[%d,%d]\n", &target_vel[0], &target_vel[1]);
         target_vel[0] = constrain(target_vel[0],-SPEED_LIMIT,SPEED_LIMIT);
         target_vel[1] = constrain(target_vel[1],-SPEED_LIMIT,SPEED_LIMIT);
-        Serial.write("Left: ");
-        Serial.write(target_vel[0]);
-        Serial.write("Right: ");
-        Serial.write(target_vel[1]);
       }
       memmove(buf, &e[1], strlen(&e[1]) + sizeof(char));
     }
