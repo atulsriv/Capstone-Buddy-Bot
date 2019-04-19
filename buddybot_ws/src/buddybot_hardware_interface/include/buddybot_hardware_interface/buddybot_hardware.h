@@ -77,7 +77,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             port.open("/dev/ttyACM0");
             port.set_option(asio::serial_port_base::baud_rate(57600));
          
-            char toWrie [30];
+            char toWrite [30];
 
             // Create write string to arduino, multiply speed by 10 and convert to int
             int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
