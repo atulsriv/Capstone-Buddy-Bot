@@ -15,7 +15,7 @@ diff_controller:
   linear:
     x:
       has_velocity_limits    : true
-      max_velocity           : 15.0   # m/s
+      max_velocity           : 30.0   # m/s
       has_acceleration_limits: true
       max_acceleration       : 5.0   # m/s^2
   angular:
