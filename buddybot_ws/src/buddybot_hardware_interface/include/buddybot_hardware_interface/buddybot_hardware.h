@@ -54,7 +54,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             registerInterface(&velocity_joint_interface_);
 
             port.open("/dev/ttyACM0");
-            port.set_option(asio::serial_port_base::baud_rate(9600));
+            port.set_option(asio::serial_port_base::baud_rate(57600));
         }
         ~buddybotHardware() { }
         void read(){ }
