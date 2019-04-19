@@ -64,10 +64,10 @@ class buddybotHardware : public hardware_interface::RobotHW
             int leftSpeed = (int)joint_velocity_command_[0];
             int rightSpeed = (int) joint_velocity_command_[1];
 
-            if (leftSpeed > 40) leftSpeed = 40;
-            if (leftSpeed < -40) leftSpeed = -40;
-            if (rightSpeed > 40) rightSpeed = 40;
-            if (rightSpeed < -40) rightSpeed = -40;
+            // if (leftSpeed > 40) leftSpeed = 40;
+            // if (leftSpeed < -40) leftSpeed = -40;
+            // if (rightSpeed > 40) rightSpeed = 40;
+            // if (rightSpeed < -40) rightSpeed = -40;
 
 
             // The arduino motor driver accepts speeds from 0 to 100, but we dont 
@@ -83,7 +83,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             asio::write(port, asio::buffer(&toWrite, n));
 
             ofstream myfile;
-            myfile.open ("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");
+            myfile.open ("/home/parallels/Desktop/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");
             myfile << toWrite << std::endl;
             myfile.close();
         }
