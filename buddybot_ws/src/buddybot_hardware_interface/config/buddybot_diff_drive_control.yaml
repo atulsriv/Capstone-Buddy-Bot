@@ -22,6 +22,6 @@ buddybot:
     angular:
       z:
         has_velocity_limits    : true
-        max_velocity           : 20.0   # rad/s
+        max_velocity           : 30.0   # rad/s
         has_acceleration_limits: true
         max_acceleration       : 5.0   # rad/s^2
