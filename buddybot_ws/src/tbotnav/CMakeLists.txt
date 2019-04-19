@@ -104,7 +104,6 @@ catkin_package(
  # INCLUDE_DIRS include
  LIBRARIES tbotnav
  CATKIN_DEPENDS cv_bridge rospy sensor_msgs std_msgs message_runtime
- DEPENDS system_lib
 )
 
 ###########
