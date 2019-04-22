@@ -26,6 +26,6 @@ int main(int argc, char** argv)
 	}
 
 	spinner.stop();
-
+	buddybot.close();
 	return 0;
 }
