@@ -4,6 +4,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 from threading import Thread
+import time
 
 import sys, select, os
 if os.name == 'nt':
@@ -14,13 +15,16 @@ else:
 NAVI_MAX_LIN_VEL = 5.0
 NAVI_MAX_ANG_VEL = 5.0
 
-LIN_VEL_STEP_SIZE = 0.01
+LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.1
 
-target_linear_vel   = 3.0
+target_linear_vel   = 0.0
 target_angular_vel  = 0.0
 control_linear_vel  = 3.0
-control_angular_vel = 0.0
+control_angular_vel = 3.0
+
+command_speed = 1.0 # initialized to 1 m/s
+navi_lock = 1
 
 
 def vels(target_linear_vel, target_angular_vel):
@@ -55,19 +59,9 @@ def checkAngularLimitVelocity(vel):
 
 
 class ASRControl(object):
-    """Class to handle turtlebot simulation control using voice"""
-
-
-
     def __init__(self):
         
-	
-	print("hello")
-
-        self.speed = 0.2
-
-        # Intializing message type
-        self.msg = Twist()
+	print("ASRControl Started")
 
         # initialize node
         rospy.init_node("asr_control")
@@ -83,86 +77,96 @@ class ASRControl(object):
         global target_linear_vel
         global target_angular_vel
         global control_linear_vel
-        global control_angular_vel
+        global navi_lock #1:locked, 0:unlocked
+        global command_speed
 
         """Function to perform action on detected word"""
         print("Detected Word: ", detected_words.data)
 
-        current_word = detected_words.data
-
-        
-
-        # while(detected_words.data == current_word):
-        if detected_words.data.find("full speed") > -1:
-            print('fs')
-            target_linear_vel = checkLinearLimitVelocity(target_linear_vel + NAVI_MAX_LIN_VEL)
-            
+        if detected_words.data.find("navi") > -1:
             twist = Twist()
-
-            control_linear_vel = makeSimpleProfile(control_linear_vel, target_linear_vel, (LIN_VEL_STEP_SIZE/2.0))
-            twist.linear.x = 5; twist.linear.y = 0.0; twist.linear.z = 0.0
-
-            control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
-            twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = control_angular_vel
-            
+            twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
+            twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
             pub.publish(twist)
 
-        elif detected_words.data.find("half speed") > -1:
-            print('hs')
-            
-            twist = Twist()
+            navi_lock = 0
 
-            control_linear_vel = makeSimpleProfile(control_linear_vel, target_linear_vel, (LIN_VEL_STEP_SIZE/2.0))
-            twist.linear.x = 2.5; twist.linear.y = 0.0; twist.linear.z = 0.0
+            rospy.loginfo("Navi Unlocked. Searching for a command.")
 
-            control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
-            twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = control_angular_vel
-            
-            pub.publish(twist)
+        if navi_lock == 0: #if unlocked, look for another kw.
+            if detected_words.data.find("full speed") > -1:
+                print('full speed')
+                command_speed = NAVI_MAX_LIN_VEL
+                print("Changing speed to max.")
+                #change speed to 5
+                print("Locking Navi. Say 'navi' for another command")
+                navi_lock = 1 #locks navi again
 
+            elif detected_words.data.find("half speed") > -1:
+                print('half speed')
+                command_speed = NAVI_MAX_LIN_VEL/2
+                print("Changing speed to half(max).")
+                print("Locking Navi. Say 'navi' for another command")
+                navi_lock = 1 #locks navi again
 
+            elif detected_words.data.find("forward") > -1:
+                t_end = time.time() + 2
+                print("forward")
 
-        elif detected_words.data.find("forward") > -1:
-            print("forward")
-            twist = Twist()
+                while time.time() - t_end < 0:
+                    twist = Twist()
+                    twist.linear.x = command_speed
+                    # twist.angular.z = 0
+                    pub.publish(twist)
 
-            twist.linear.x = 0.2
+                print("Locking Navi. Say 'navi' for another command")
+                navi_lock = 1 #locks navi again
 
-            twist.angular.z = 0
-            pub.publish(twist)
+            elif detected_words.data.find("left") > -1:
+                print('quarter left turn')
+                t_end = time.time() + 0.55
+                while time.time() - t_end < 0:
+                    twist = Twist()
+                    twist.angular.z = 3
+                    pub.publish(twist)
+                print("Locking Navi. Say 'navi' for another command")
+                navi_lock = 1 #locks navi again
 
+            elif detected_words.data.find("right") > -1:
+                print('quarter right turn')
+                t_end = time.time() + 0.55
+                while time.time() - t_end < 0:
+                    twist = Twist()
+                    twist.angular.z = -3
+                    pub.publish(twist)
+                print("Locking Navi. Say 'navi' for another command")
+                navi_lock = 1 #locks navi again
 
-        elif detected_words.data.find("left") > -1:
-            twist = Twist()
-            print("i'm inside while and this is left")
-            target_angular_vel = checkAngularLimitVelocity(target_angular_vel + ANG_VEL_STEP_SIZE)
-            pub.publish(twist)
+            elif detected_words.data.find("back") > -1:
+                t_end = time.time() + 2
+                print("back")
+                while time.time() - t_end < 0:
+                    twist = Twist()
 
-        elif detected_words.data.find("right") > -1:
-            print("HI im inside while and this is right")
-            twist = Twist()
-            target_angular_vel = checkAngularLimitVelocity(target_angular_vel - ANG_VEL_STEP_SIZE)
-            pub.publish(twist)
+                    twist.linear.x = -(NAVI_MAX_LIN_VEL-2)
+                    twist.angular.z = 0
 
-        elif detected_words.data.find("back") > -1:
-            twist = Twist()
-            print("HI im inside while and this is back")
-            target_angular_vel = checkAngularLimitVelocity(target_angular_vel - ANG_VEL_STEP_SIZE)
-            print vels(target_linear_vel,target_angular_vel)
-            pub.publish(twist)
+                    pub.publish(twist)
+                print("Locking Navi. Say 'navi' for another command")
+                navi_lock = 1 #locks navi again
 
-        elif detected_words.data.find("stop") > -1 or detected_words.data.find("halt") > -1:
-            twist = Twist()
-            target_linear_vel   = 0.0
-            control_linear_vel  = 0.0
-            target_angular_vel  = 0.0
-            control_angular_vel = 0.0
-            print vels(target_linear_vel, target_angular_vel)
-            pub.publish(twist)
-
-
-    	else:
-            print("End of reading")
+            elif detected_words.data.find("stop") > -1 or detected_words.data.find("halt") > -1:
+                twist = Twist()
+                target_linear_vel   = 0.0
+                control_linear_vel  = 0.0
+                target_angular_vel  = 0.0
+                control_angular_vel = 0.0
+                print vels(target_linear_vel, target_angular_vel)
+                pub.publish(twist)
+                print("Locking Navi. Say 'navi' for another command")
+                navi_lock = 1 #locks navi again
+            else:
+                pass
 
     def shutdown(self):
         """
