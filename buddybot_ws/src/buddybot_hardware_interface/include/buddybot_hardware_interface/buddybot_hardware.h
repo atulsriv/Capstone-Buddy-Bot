@@ -23,7 +23,7 @@ using namespace std;
 class buddybotHardware : public hardware_interface::RobotHW 
 {
     public:
-        buddybotHardware(){
+        buddybotHardware() : port(io){
 
             // Resize vectors
             joint_position_[0] = 0;
@@ -52,8 +52,24 @@ class buddybotHardware : public hardware_interface::RobotHW
             velocity_joint_interface_.registerHandle(jointVelocityHandle_1);
 
             registerInterface(&velocity_joint_interface_);
+
+            //port.open("/dev/ttyACM0");
+            //port.set_option(asio::serial_port_base::baud_rate(57600));
         }
         ~buddybotHardware() { }
+        void close() {
+
+            char toWrite [30];
+
+            // Create write string to arduino, multiply speed by 10 and convert to int
+            int n = sprintf (toWrite, "[%d,%d]\n", 0, 0);
+         
+            // Read 1 character into c, this will block
+            // forever if no character arrives.
+            //asio::write(port, asio::buffer(&toWrite, n));
+
+            port.close();
+        }
         void read(){ }
         void write() {
             // Left and Right Speed come in as rad/sec in the range of 0 to 5 m/s
@@ -61,45 +77,27 @@ class buddybotHardware : public hardware_interface::RobotHW
             int leftSpeed = (int)joint_velocity_command_[0];
             int rightSpeed = (int) joint_velocity_command_[1];
 
-            if (leftSpeed > 40) leftSpeed = 40;
-            if (leftSpeed < -40) leftSpeed = -40;
-            if (rightSpeed > 40) rightSpeed = 40;
-            if (rightSpeed < -40) rightSpeed = -40;
+            if (leftSpeed > 100) leftSpeed = 100;
+            if (leftSpeed < -100) leftSpeed = -100;
+            if (rightSpeed > 100) rightSpeed = 100;
+            if (rightSpeed < -100) rightSpeed = -100;
 
 
             // The arduino motor driver accepts speeds from 0 to 100, but we dont 
             // want to run at max speed, so a limit of 50 will be applied
 
-            
-            asio::io_service io;
-            asio::serial_port port(io);
-         
-            port.open("/dev/ttyACM0");
-            port.set_option(asio::serial_port_base::baud_rate(57600));
-         
-            char toWrie [30];
+            char toWrite [30];
 
             // Create write string to arduino, multiply speed by 10 and convert to int
             int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
          
             // Read 1 character into c, this will block
             // forever if no character arrives.
-            asio::write(port, asio::buffer(&toWrite, n));
-         
-            port.close();
-            
-            /*
-
-            char toWrite [100];
-
-            // Create write string to arduino, multiply speed by 10 and convert to int
-            int n = std::sprintf(toWrite, "[%f,%f]\n", leftSpeed, rightSpeed);
+            //asio::write(port, asio::buffer(&toWrite, n));
 
             ofstream myfile;
-            myfile.open ("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");
-            myfile << toWrite << std::endl;
+            myfile.open("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");            myfile << toWrite << std::endl;
             myfile.close();
-            */
         }
 
     protected:
@@ -112,6 +110,10 @@ class buddybotHardware : public hardware_interface::RobotHW
         double joint_velocity_[2];
         double joint_effort_[2];
         double joint_velocity_command_[2];
+        
+        asio::io_service io;
+        asio::serial_port port;
+
 
 
 }; // class

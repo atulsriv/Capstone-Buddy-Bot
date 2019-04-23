@@ -1,5 +1,5 @@
 hardware_interface:
-     loop_hz: 10 # hz
+     loop_hz: 50 # hz
      joints:
        - left_wheel_joint
        - right_wheel_joint

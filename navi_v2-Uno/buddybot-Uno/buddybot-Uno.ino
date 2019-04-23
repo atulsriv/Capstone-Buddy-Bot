@@ -42,6 +42,7 @@ void setup() {
   Serial.begin(57600);
   lasttime = millis();
   softstop = millis();
+  //Serial.print("Ready!");
 }
 
 void loop() 
@@ -73,7 +74,6 @@ void readSerial()
         sscanf(s, "[%d,%d]\n", &target_vel[0], &target_vel[1]);
         target_vel[0] = constrain(target_vel[0],-SPEED_LIMIT,SPEED_LIMIT);
         target_vel[1] = constrain(target_vel[1],-SPEED_LIMIT,SPEED_LIMIT);
-
       }
       memmove(buf, &e[1], strlen(&e[1]) + sizeof(char));
     }
@@ -109,6 +109,4 @@ void moveMotor()
 {
   leftMotor.Set(-1*leftVel);
   rightMotor.Set(rightVel);
-
 }
-

@@ -9,7 +9,6 @@ int main(int argc, char** argv)
 	buddybotHardware buddybot;
 	controller_manager::ControllerManager cm(&buddybot, nh);
 
-
 	ros::AsyncSpinner spinner(1);
 	spinner.start();
 
@@ -27,6 +26,6 @@ int main(int argc, char** argv)
 	}
 
 	spinner.stop();
-
+	buddybot.close();
 	return 0;
 }
