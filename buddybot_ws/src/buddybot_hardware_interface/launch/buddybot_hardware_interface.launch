@@ -10,11 +10,10 @@
     <rosparam file="$(find buddybot_hardware_interface)/config/buddybot_diff_drive_control.yaml" command="load"/>
 
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller diff_controller"/>
-
-
  
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
 
     <remap from="/joint_states" to="/buddybot/joint_states" />
     </node>
 </launch>
+
