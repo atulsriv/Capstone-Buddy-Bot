@@ -124,20 +124,20 @@ class ASRControl(object):
 
             elif detected_words.data.find("left") > -1:
                 print('quarter left turn')
-                t_end = time.time() + 0.55
+                t_end = time.time() + 4
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = 3
+                    twist.angular.z = 10
                     pub.publish(twist)
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
 
             elif detected_words.data.find("right") > -1:
                 print('quarter right turn')
-                t_end = time.time() + 0.55
+                t_end = time.time() + 4
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = -3
+                    twist.angular.z = -10
                     pub.publish(twist)
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
