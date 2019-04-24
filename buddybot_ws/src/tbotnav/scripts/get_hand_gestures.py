@@ -50,7 +50,7 @@ class HandGestures:
 
 
     def process_depth_image(self, inImg):
-	values_num_fingers = ["Stop","Turn Left","Turn Right","Follow","Back","Full speed"]
+	values_num_fingers = ["Stop","Turn Left","Turn Right","Forward","Backward","Full speed"]
         np.clip(inImg, 0, 1023, inImg)
         inImg >>= 2
         inImg = inImg.astype(np.uint8)

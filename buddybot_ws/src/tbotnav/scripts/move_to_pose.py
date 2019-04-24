@@ -58,6 +58,7 @@ class HRControl(object):
         if(len(data_fingers)<5):
             #print()
             data_fingers.append(self.num_fingers)
+            print("I have less than 5 repeats")
 
         elif((len(data_fingers)==5) and (len(set(data_fingers)) == 1)):
             # max(data_fingers,key = data_fingers.count)   # this gets the maximum occurence of any element in a list but we don't need that. 
@@ -70,7 +71,6 @@ class HRControl(object):
                 print("Changing speed to max.")
                 #change speed to 5
                 print("Locking Navi. Say 'navi' for another command")
-                navi_lock = 1 #locks navi again
 
             elif x == 3: #forward
                 t_end = time.time() + 2
@@ -123,8 +123,10 @@ class HRControl(object):
 
         else:
             data_fingers.pop(0)
+            print("get rid of first")
             #print("data popped", data_fingers.pop(0))
         print("detected",data_fingers)
+        data_fingers = [0, 0, 0, 0, 0]
 
     def shutdown(self):
         """
