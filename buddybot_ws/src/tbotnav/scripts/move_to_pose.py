@@ -126,6 +126,7 @@ class HRControl(object):
             print("get rid of first")
             #print("data popped", data_fingers.pop(0))
         print("detected",data_fingers)
+        time.sleep(1)
         
 
     def shutdown(self):
