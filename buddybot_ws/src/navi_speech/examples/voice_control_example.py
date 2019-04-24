@@ -27,35 +27,34 @@ command_speed = 1.0 # initialized to 1 m/s
 navi_lock = 1
 
 
-def vels(target_linear_vel, target_angular_vel):
-    return "currently:\tlinear vel %s\t angular vel %s " % (target_linear_vel,target_angular_vel)
+# def vels(target_linear_vel, target_angular_vel):
+#     return "currently:\tlinear vel %s\t angular vel %s " % (target_linear_vel,target_angular_vel)
 
-def makeSimpleProfile(output, input, slop):
-    if input > output:
-        output = min( input, output + slop )
-    elif input < output:
-        output = max( input, output - slop )
-    else:
-        output = input
+# def makeSimpleProfile(output, input, slop):
+#     if input > output:
+#         output = min( input, output + slop )
+#     elif input < output:
+#         output = max( input, output - slop )
+#     else:
+#         output = input
 
-    return output
+#     return output
 
-def constrain(input, low, high):
-    if input < low:
-      input = low
-    elif input > high:
-      input = high
-    else:
-      input = input
+# def constrain(input, low, high):
+#     if input < low:
+#       input = low
+#     elif input > high:
+#       input = high
+#     else:
+#       input = input
 
-    return input
+#     return input
 
-def checkLinearLimitVelocity(vel):
-    return constrain(vel, -NAVI_MAX_LIN_VEL, NAVI_MAX_LIN_VEL)
+# def checkLinearLimitVelocity(vel):
+#     return constrain(vel, -NAVI_MAX_LIN_VEL, NAVI_MAX_LIN_VEL)
 
-def checkAngularLimitVelocity(vel):
-    return constrain(vel, -NAVI_MAX_ANG_VEL, NAVI_MAX_ANG_VEL)
-
+# def checkAngularLimitVelocity(vel):
+#     return constrain(vel, -NAVI_MAX_ANG_VEL, NAVI_MAX_ANG_VEL)
 
 
 class ASRControl(object):
