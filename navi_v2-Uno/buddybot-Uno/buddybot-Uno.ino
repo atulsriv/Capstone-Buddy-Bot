@@ -33,11 +33,58 @@ FRCmotor leftMotor; //DECLARE LEFT MOTOR CONTROLLER
 FRCmotor rightMotor; //DECLARE RIGHT MOTOR CONTROLLER
 
 
+//encoder count variables
+volatile float leftCount=0, rightCount=0;
+
+//Interrupt events for encoders
+void leftEncoderEvent() {
+  if(digitalRead(2)==HIGH) {
+    if(digitalRead(4)==LOW) {
+      leftCount++;
+    }
+    else {
+      leftCount--;
+    }
+  } 
+  else {
+    if(digitalRead(4)==LOW) {
+      leftCount--;
+    }
+    else {
+      leftCount++;
+    }
+  }
+}
+
+void rightEncoderEvent() {
+  if(digitalRead(3)==HIGH) {
+    if(digitalRead(5)==LOW) {
+      rightCount++;
+    }
+    else {
+      rightCount--;
+    }
+  } 
+  else {
+    if(digitalRead(5)==LOW) {
+      rightCount--;
+    }
+    else {
+      rightCount++;
+    }
+  }
+}
+
+
+
 void setup() {
   leftMotor.SetPort(11); //DECLARE ARDUINO PORT FOR MOTOR CONTROLLER SIGNAL
   rightMotor.SetPort(10);
   leftMotor.Set(0); //SET INITIAL MOTOR VALUES TO ZERO
   rightMotor.Set(0); //(100 MAX FORWARD, -100 MAX BACK)
+
+  attachInterrupt(digitalPinToInterrupt(2),leftEncoderEvent,CHANGE);
+  attachInterrupt(digitalPinToInterrupt(3),rightEncoderEvent,CHANGE);
   
   Serial.begin(57600);
   lasttime = millis();
@@ -50,6 +97,7 @@ void loop()
   readSerial();
   ramp();
   moveMotor();
+  printSerial();
   delay(50);
 }
 
@@ -109,4 +157,10 @@ void moveMotor()
 {
   leftMotor.Set(-1*leftVel);
   rightMotor.Set(rightVel);
+}
+
+void printSerial() {
+  int len = sprintf(write_buffer, "[%ld,%ld]\n", leftCount, rightCount);
+  write_buffer[len+1] = '\0';
+  Serial.print(write_buffer);
 }

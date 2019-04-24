@@ -70,7 +70,23 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             port.close();
         }
-        void read(){ }
+        void read(){ 
+            string result;
+
+            char c;
+            do {
+                asio::read(port, asio::buffer(&c, 1));
+                result += c;
+            } while(c != '\n');
+
+            sscanf(result.c_str(), "[%ld,%ld]\n", &this->leftEncoder, &this->rightEncoder);
+
+            ofstream myfile;
+            myfile.open("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");
+            myfile << leftEncoder << ',' << rightEncoder << ']' << std::endl;
+            myfile.close();
+
+        }
         void write() {
             // Left and Right Speed come in as rad/sec in the range of 0 to 5 m/s
 
@@ -96,7 +112,8 @@ class buddybotHardware : public hardware_interface::RobotHW
             asio::write(port, asio::buffer(&toWrite, n));
 
             ofstream myfile;
-            myfile.open("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");            myfile << toWrite << std::endl;
+            myfile.open("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");
+            myfile << toWrite << std::endl;
             myfile.close();
         }
 
@@ -110,6 +127,8 @@ class buddybotHardware : public hardware_interface::RobotHW
         double joint_velocity_[2];
         double joint_effort_[2];
         double joint_velocity_command_[2];
+        long leftEncoder;
+        long rightEncoder;
         
         asio::io_service io;
         asio::serial_port port;
