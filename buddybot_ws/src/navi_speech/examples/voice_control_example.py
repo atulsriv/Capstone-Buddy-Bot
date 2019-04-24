@@ -12,8 +12,8 @@ if os.name == 'nt':
 else:
   import tty, termios
 
-NAVI_MAX_LIN_VEL = 8.0
-NAVI_MAX_ANG_VEL = 8.0
+NAVI_MAX_LIN_VEL = 5.0
+NAVI_MAX_ANG_VEL = 5.0
 
 LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.1
