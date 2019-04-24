@@ -70,7 +70,7 @@ class HRControl(object):
                 command_speed = NAVI_MAX_LIN_VEL
                 print("Changing speed to max.")
                 #change speed to 5
-                print("Locking Navi. Say 'navi' for another command")
+                data_fingers = [0, 0, 0, 0, 0]
 
             elif x == 3: #forward
                 t_end = time.time() + 2
@@ -81,7 +81,7 @@ class HRControl(object):
                     twist.linear.x = command_speed
                     # twist.angular.z = 0
                     pub.publish(twist)
-
+                data_fingers = [0, 0, 0, 0, 0]
             elif x == 1: #left
                 print('quarter left turn')
                 t_end = time.time() + 2.4
@@ -89,7 +89,7 @@ class HRControl(object):
                     twist = Twist()
                     twist.angular.z = 13
                     pub.publish(twist)
-
+                data_fingers = [0, 0, 0, 0, 0]
             elif x == 2: #right
                 print('quarter right turn')
                 t_end = time.time() + 2.4
@@ -97,7 +97,7 @@ class HRControl(object):
                     twist = Twist()
                     twist.angular.z = -13
                     pub.publish(twist)
-
+                data_fingers = [0, 0, 0, 0, 0]
             elif x == 4: #back
                 t_end = time.time() +  2
                 print("back")
@@ -107,7 +107,7 @@ class HRControl(object):
                     twist.linear.x = -command_speed
                     # twist.angular.z = 0
                     pub.publish(twist)
-
+                data_fingers = [0, 0, 0, 0, 0]
             elif x == 0: #stop
                 twist = Twist()
                 target_linear_vel   = 0.0
@@ -126,7 +126,7 @@ class HRControl(object):
             print("get rid of first")
             #print("data popped", data_fingers.pop(0))
         print("detected",data_fingers)
-        data_fingers = [0, 0, 0, 0, 0]
+        
 
     def shutdown(self):
         """
