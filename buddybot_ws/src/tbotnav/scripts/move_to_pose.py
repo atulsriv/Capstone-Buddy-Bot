@@ -13,8 +13,8 @@ from math import pi, radians, atan, sqrt, cos, sin
 
 data_fingers = []
 
-NAVI_MAX_LIN_VEL = 5.0
-NAVI_MAX_ANG_VEL = 5.0
+NAVI_MAX_LIN_VEL = 7.0
+NAVI_MAX_ANG_VEL = 7.0
 
 LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.1
@@ -83,18 +83,18 @@ class HRControl(object):
 
             elif self.num_fingers == 1: #left
                 print('quarter left turn')
-                t_end = time.time() + 1.4
+                t_end = time.time() + 2.4
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = 18
+                    twist.angular.z = 13
                     pub.publish(twist)
 
             elif self.num_fingers == 2: #right
                 print('quarter right turn')
-                t_end = time.time() + 1.4
+                t_end = time.time() + 2.4
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = -18
+                    twist.angular.z = -13
                     pub.publish(twist)
 
             elif self.num_fingers == 4: #back
@@ -113,7 +113,8 @@ class HRControl(object):
                 control_linear_vel  = 0.0
                 target_angular_vel  = 0.0
                 control_angular_vel = 0.0
-                print vels(target_linear_vel, target_angular_vel)
+                twist.linear.x = 0
+                twist.angular.z = 0
                 pub.publish(twist)
 
             else:
