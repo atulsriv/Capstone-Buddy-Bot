@@ -60,10 +60,11 @@ class HRControl(object):
             data_fingers.append(self.num_fingers)
 
         elif((len(data_fingers)==5) and (len(set(data_fingers)) == 1)):
+            # max(data_fingers,key = data_fingers.count)   # this gets the maximum occurence of any element in a list but we don't need that. 
             #print("detected",data_fingers)
-            data_fingers.pop(0)
+            x = data_fingers.pop(0)
             
-            if self.num_fingers == 5: #full speed
+            if x == 5: #full speed
                 print('full speed')
                 command_speed = NAVI_MAX_LIN_VEL
                 print("Changing speed to max.")
@@ -71,7 +72,7 @@ class HRControl(object):
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
 
-            elif self.num_fingers == 3: #forward
+            elif x == 3: #forward
                 t_end = time.time() + 2
                 print("forward")
 
@@ -81,7 +82,7 @@ class HRControl(object):
                     # twist.angular.z = 0
                     pub.publish(twist)
 
-            elif self.num_fingers == 1: #left
+            elif x == 1: #left
                 print('quarter left turn')
                 t_end = time.time() + 2.4
                 while time.time() - t_end < 0:
@@ -89,7 +90,7 @@ class HRControl(object):
                     twist.angular.z = 13
                     pub.publish(twist)
 
-            elif self.num_fingers == 2: #right
+            elif x == 2: #right
                 print('quarter right turn')
                 t_end = time.time() + 2.4
                 while time.time() - t_end < 0:
@@ -97,7 +98,7 @@ class HRControl(object):
                     twist.angular.z = -13
                     pub.publish(twist)
 
-            elif self.num_fingers == 4: #back
+            elif x == 4: #back
                 t_end = time.time() +  2
                 print("back")
 
@@ -107,7 +108,7 @@ class HRControl(object):
                     # twist.angular.z = 0
                     pub.publish(twist)
 
-            elif self.num_fingers == 0: #stop
+            elif x == 0: #stop
                 twist = Twist()
                 target_linear_vel   = 0.0
                 control_linear_vel  = 0.0
