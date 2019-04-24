@@ -10,17 +10,15 @@ from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from math import pi, radians, atan, sqrt, cos, sin
 
+data_fingers = []
+
 class HRControl(object):
     """Class to handle turtlebot simulation control using voice"""
 
     def __init__(self):
+        self.num_fingers = 0
 	
 	print("hello")
-
-        # Default values for turtlebot_simulator
-        self.speed = 0.2
-        # Intializing message type
-        self.msg = Twist()
 
         # initialize node
         rospy.init_node("handgest_control")
@@ -32,44 +30,48 @@ class HRControl(object):
         # Subscribe to kws output
         rospy.Subscriber('num_fingers', Int32, self.num_fingers_callback)
         rospy.spin()
+        
 
     def num_fingers_callback(self, data):
         self.num_fingers = data.data
+        global data_fingers
+        if(len(data_fingers)<5):
+            #print()
+            data_fingers.append(self.num_fingers)
 
-	print("detected gesture", self.num_fingers)
-        if self.num_fingers == 5: #full speed
-            if self.speed == 0.2:
-                self.msg.linear.x = self.msg.linear.x * 2
-                self.msg.angular.z = self.msg.angular.z * 2
-                self.speed = 0.4
+        elif((len(data_fingers)==5) and (len(set(data_fingers)) == 1)):
+            #print("detected",data_fingers)
+            data_fingers.pop(0)
+            
+            if self.num_fingers == 5: #full speed
 
-        elif self.num_fingers == 3: #forward
-            self.msg.linear.x = self.speed
-            self.msg.angular.z = 0
 
-        elif self.num_fingers == 1: #left
-            if self.msg.linear.x != 0:
-                if self.msg.angular.z < self.speed:
-                    self.msg.angular.z -= 0.75
+            elif self.num_fingers == 3: #forward
+
+
+            elif self.num_fingers == 1: #left
+
+
+            elif self.num_fingers == 2: #right
+
+
+            elif self.num_fingers == 4: #back
+
+
+            elif self.num_fingers == 0: #stop
+
+
             else:
-                self.msg.angular.z = self.speed * 2
+                print("done")
 
-        elif self.num_fingers == 2: #right
-	    print("right")
-            if self.msg.linear.x != 0:
-                if self.msg.angular.z > -self.speed:
-                    self.msg.angular.z += 0.75
-            else:
-                self.msg.angular.z = -self.speed * 2
-
-        elif self.num_fingers == 4: #back
-            self.msg.linear.x = -self.speed
-            self.msg.angular.z = 0
+            # Publish required message
+            self.pub_.publish(self.msg)
 
 
-        # Publish required message
-        self.pub_.publish(self.msg)
-
+        else:
+            data_fingers.pop(0)
+            #print("data popped", data_fingers.pop(0))
+        print("detected",data_fingers)
 
     def shutdown(self):
         """
