@@ -53,8 +53,8 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             registerInterface(&velocity_joint_interface_);
 
-            //port.open("/dev/ttyACM0");
-            //port.set_option(asio::serial_port_base::baud_rate(57600));
+            port.open("/dev/ttyACM0");
+            port.set_option(asio::serial_port_base::baud_rate(57600));
         }
         ~buddybotHardware() { }
         void close() {
@@ -66,7 +66,7 @@ class buddybotHardware : public hardware_interface::RobotHW
          
             // Read 1 character into c, this will block
             // forever if no character arrives.
-            //asio::write(port, asio::buffer(&toWrite, n));
+            asio::write(port, asio::buffer(&toWrite, n));
 
             port.close();
         }
@@ -93,7 +93,7 @@ class buddybotHardware : public hardware_interface::RobotHW
          
             // Read 1 character into c, this will block
             // forever if no character arrives.
-            //asio::write(port, asio::buffer(&toWrite, n));
+            asio::write(port, asio::buffer(&toWrite, n));
 
             ofstream myfile;
             myfile.open("/home/nick/Documents/Capstone-Buddy-Bot/buddybot_ws/src/buddybot_hardware_interface/src/test.txt");            myfile << toWrite << std::endl;
