@@ -64,15 +64,18 @@ class HRControl(object):
             # max(data_fingers,key = data_fingers.count)   # this gets the maximum occurence of any element in a list but we don't need that. 
             #print("detected",data_fingers)
             x = data_fingers.pop(0)
-            
+            navi_lock = 1 # locked
+
             if x == 5: #full speed
                 print('full speed')
                 command_speed = NAVI_MAX_LIN_VEL
                 print("Changing speed to max.")
                 #change speed to 5
                 data_fingers = [0, 0, 0, 0, 0]
-
+                navi_lock = 0
             elif x == 3: #forward
+                navi_lock = 1
+
                 t_end = time.time() + 2
                 print("forward")
 
@@ -82,7 +85,9 @@ class HRControl(object):
                     # twist.angular.z = 0
                     pub.publish(twist)
                 data_fingers = [0, 0, 0, 0, 0]
+
             elif x == 1: #left
+                navi_lock = 1
                 print('quarter left turn')
                 t_end = time.time() + 2.4
                 while time.time() - t_end < 0:
@@ -91,6 +96,7 @@ class HRControl(object):
                     pub.publish(twist)
                 data_fingers = [0, 0, 0, 0, 0]
             elif x == 2: #right
+                navi_lock = 1
                 print('quarter right turn')
                 t_end = time.time() + 2.4
                 while time.time() - t_end < 0:
@@ -99,6 +105,7 @@ class HRControl(object):
                     pub.publish(twist)
                 data_fingers = [0, 0, 0, 0, 0]
             elif x == 4: #back
+                navi_lock = 1
                 t_end = time.time() +  2
                 print("back")
 
@@ -119,14 +126,14 @@ class HRControl(object):
                 pub.publish(twist)
 
             else:
-                print("done")
+                print("idk how i got here... not technically possible...")
 
         else:
             data_fingers.pop(0)
             print("get rid of first")
             #print("data popped", data_fingers.pop(0))
         print("detected",data_fingers)
-        time.sleep(1)
+        # time.sleep(1)
         
 
     def shutdown(self):
