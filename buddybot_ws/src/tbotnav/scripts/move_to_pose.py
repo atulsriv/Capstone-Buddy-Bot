@@ -31,16 +31,15 @@ class HRControl(object):
     """Class to handle turtlebot simulation control using voice"""
 
     def __init__(self):
-        self.num_fingers = 0
 	
-	print("hello")
+	print("HRControl Started")
 
         # initialize node
-        rospy.init_node("handgest_control")
+        
         rospy.on_shutdown(self.shutdown)
 
         # Initializing publisher with buffer size of 10 messages
-        self.pub_ = rospy.Publisher("cmd_vel", Twist, queue_size=10)
+        
 
         # Subscribe to kws output
         rospy.Subscriber('num_fingers', Int32, self.num_fingers_callback)
@@ -50,6 +49,12 @@ class HRControl(object):
     def num_fingers_callback(self, data):
         self.num_fingers = data.data
         global data_fingers
+        global target_linear_vel
+        global target_angular_vel
+        global control_linear_vel
+        global navi_lock #1:locked, 0:unlocked
+        global command_speed
+        
         if(len(data_fingers)<5):
             #print()
             data_fingers.append(self.num_fingers)
@@ -131,5 +136,9 @@ class HRControl(object):
 
 
 if __name__ == "__main__":
+    print("HRControl Started")
+    rospy.init_node("handgest_control")
+    pub = rospy.Publisher("/diff_controller/cmd_vel", Twist, queue_size=10)
     HRControl()
+    print("Done...")
     
