@@ -12,8 +12,8 @@ if os.name == 'nt':
 else:
   import tty, termios
 
-NAVI_MAX_LIN_VEL = 5.0
-NAVI_MAX_ANG_VEL = 5.0
+NAVI_MAX_LIN_VEL = 8.0
+NAVI_MAX_ANG_VEL = 8.0
 
 LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.1
@@ -27,35 +27,34 @@ command_speed = 1.0 # initialized to 1 m/s
 navi_lock = 1
 
 
-def vels(target_linear_vel, target_angular_vel):
-    return "currently:\tlinear vel %s\t angular vel %s " % (target_linear_vel,target_angular_vel)
+# def vels(target_linear_vel, target_angular_vel):
+#     return "currently:\tlinear vel %s\t angular vel %s " % (target_linear_vel,target_angular_vel)
 
-def makeSimpleProfile(output, input, slop):
-    if input > output:
-        output = min( input, output + slop )
-    elif input < output:
-        output = max( input, output - slop )
-    else:
-        output = input
+# def makeSimpleProfile(output, input, slop):
+#     if input > output:
+#         output = min( input, output + slop )
+#     elif input < output:
+#         output = max( input, output - slop )
+#     else:
+#         output = input
 
-    return output
+#     return output
 
-def constrain(input, low, high):
-    if input < low:
-      input = low
-    elif input > high:
-      input = high
-    else:
-      input = input
+# def constrain(input, low, high):
+#     if input < low:
+#       input = low
+#     elif input > high:
+#       input = high
+#     else:
+#       input = input
 
-    return input
+#     return input
 
-def checkLinearLimitVelocity(vel):
-    return constrain(vel, -NAVI_MAX_LIN_VEL, NAVI_MAX_LIN_VEL)
+# def checkLinearLimitVelocity(vel):
+#     return constrain(vel, -NAVI_MAX_LIN_VEL, NAVI_MAX_LIN_VEL)
 
-def checkAngularLimitVelocity(vel):
-    return constrain(vel, -NAVI_MAX_ANG_VEL, NAVI_MAX_ANG_VEL)
-
+# def checkAngularLimitVelocity(vel):
+#     return constrain(vel, -NAVI_MAX_ANG_VEL, NAVI_MAX_ANG_VEL)
 
 
 class ASRControl(object):
@@ -110,7 +109,7 @@ class ASRControl(object):
                 navi_lock = 1 #locks navi again
 
             elif detected_words.data.find("forward") > -1:
-                t_end = time.time() + 2
+                t_end = time.time() + 1
                 print("forward")
 
                 while time.time() - t_end < 0:
@@ -124,34 +123,34 @@ class ASRControl(object):
 
             elif detected_words.data.find("left") > -1:
                 print('quarter left turn')
-                t_end = time.time() + 0.55
+                t_end = time.time() + 3
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = 3
+                    twist.angular.z = 14
                     pub.publish(twist)
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
 
             elif detected_words.data.find("right") > -1:
                 print('quarter right turn')
-                t_end = time.time() + 0.55
+                t_end = time.time() + 3
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = -3
+                    twist.angular.z = -14
                     pub.publish(twist)
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
 
             elif detected_words.data.find("back") > -1:
-                t_end = time.time() + 2
+                t_end = time.time() +  2
                 print("back")
+
                 while time.time() - t_end < 0:
                     twist = Twist()
-
-                    twist.linear.x = -(NAVI_MAX_LIN_VEL-2)
-                    twist.angular.z = 0
-
+                    twist.linear.x = -(command_speed*2.5)
+                    # twist.angular.z = 0
                     pub.publish(twist)
+
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
 

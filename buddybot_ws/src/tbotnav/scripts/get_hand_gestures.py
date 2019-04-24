@@ -50,6 +50,7 @@ class HandGestures:
 
 
     def process_depth_image(self, inImg):
+	values_num_fingers = ["Stop","Turn Left","Turn Right","Forward","Backward","Full speed"]
         np.clip(inImg, 0, 1023, inImg)
         inImg >>= 2
         inImg = inImg.astype(np.uint8)
@@ -61,7 +62,7 @@ class HandGestures:
         # print width
         cv2.circle(outImg, (width/2, height/2), 6, [0, 102, 0], 6)
         cv2.rectangle(outImg, (width/4, height/4), (width*3/4, height*3/4), [0, 102, 255], 4)
-        cv2.putText(outImg, str(num_fingers), (width/2,height/5), cv2.FONT_HERSHEY_SIMPLEX, 1.4, (122, 0, 255))
+        cv2.putText(outImg, values_num_fingers[num_fingers], (width/2,height/5), cv2.FONT_HERSHEY_SIMPLEX, 1.4, (122, 0, 255))
         
         return (outImg, num_fingers)
         # return outImg
