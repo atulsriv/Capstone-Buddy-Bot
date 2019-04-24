@@ -124,7 +124,7 @@ class ASRControl(object):
 
             elif detected_words.data.find("left") > -1:
                 print('quarter left turn')
-                t_end = time.time() + 5
+                t_end = time.time() + 1
                 while time.time() - t_end < 0:
                     twist = Twist()
                     twist.angular.z = 18
@@ -134,7 +134,7 @@ class ASRControl(object):
 
             elif detected_words.data.find("right") > -1:
                 print('quarter right turn')
-                t_end = time.time() + 5
+                t_end = time.time() + 1
                 while time.time() - t_end < 0:
                     twist = Twist()
                     twist.angular.z = -18
