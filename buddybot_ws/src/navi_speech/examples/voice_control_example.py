@@ -12,8 +12,8 @@ if os.name == 'nt':
 else:
   import tty, termios
 
-NAVI_MAX_LIN_VEL = 5.0
-NAVI_MAX_ANG_VEL = 5.0
+NAVI_MAX_LIN_VEL = 8.0
+NAVI_MAX_ANG_VEL = 8.0
 
 LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.1
@@ -123,20 +123,20 @@ class ASRControl(object):
 
             elif detected_words.data.find("left") > -1:
                 print('quarter left turn')
-                t_end = time.time() + 1.4
+                t_end = time.time() + 3
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = 18
+                    twist.angular.z = 15
                     pub.publish(twist)
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
 
             elif detected_words.data.find("right") > -1:
                 print('quarter right turn')
-                t_end = time.time() + 1.4
+                t_end = time.time() + 3
                 while time.time() - t_end < 0:
                     twist = Twist()
-                    twist.angular.z = -18
+                    twist.angular.z = -15
                     pub.publish(twist)
                 print("Locking Navi. Say 'navi' for another command")
                 navi_lock = 1 #locks navi again
