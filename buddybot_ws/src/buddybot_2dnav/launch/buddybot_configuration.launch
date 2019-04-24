@@ -25,10 +25,9 @@
 
     <remap from="/joint_states" to="/buddybot/joint_states" />
 
+</node>
 <!-- publish odom -->
     <include file="$(find laser_scan_matcher)/demo/demo.launch">
   </include>
-
-    </node>
 
 </launch> 
