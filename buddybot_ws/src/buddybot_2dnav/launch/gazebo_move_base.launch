@@ -6,16 +6,17 @@
     <node name="map_server" pkg="map_server" type="map_server" args="$(find buddybot_2dnav)/maps/gmapping_test_map.yaml"/>
 
  <!--- Run AMCL --> 
-    <include file="$(find buddybot_2dnav)/launch/amcl.launch" />
+    <include file="$(find buddybot_2dnav)/launch/gazebo_amcl.launch" />
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
    <remap from="/cmd_vel" to="/diff_controller/cmd_vel"/>
 
     <rosparam file="$(find buddybot_2dnav)/config/gazebo_costmap_common_params.yaml" command="load" ns="global_costmap" /> 
     <rosparam file="$(find buddybot_2dnav)/config/gazebo_costmap_common_params.yaml" command="load" ns="local_costmap" />
-    <rosparam file="$(find buddybot_2dnav)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find buddybot_2dnav)/config/gazebo_local_costmap_params.yaml" command="load" />
     <rosparam file="$(find buddybot_2dnav)/config/global_costmap_params.yaml" command="load" /> 
     <rosparam file="$(find buddybot_2dnav)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find buddybot_2dnav)/config/dwa_local_planner_params.yaml" command="load" />
  </node>
 
 </launch> 

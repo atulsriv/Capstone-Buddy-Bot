@@ -6,6 +6,7 @@ diff_controller:
   type        : "diff_drive_controller/DiffDriveController"
   left_wheel  : 'left_wheel_joint'
   right_wheel : 'right_wheel_joint'
+  odom_frame_id:  /diff_controller/odom
   publish_rate: 50.0               # default: 50
   pose_covariance_diagonal : [0.001, .001, 1000000., 1000000., 1000000., 1000.]
   twist_covariance_diagonal: [0.001, .001, 1000000., 1000000., 1000000., 1000.]

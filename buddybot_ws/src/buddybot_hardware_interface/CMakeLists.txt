@@ -13,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   joint_limits_interface
   roscpp
 )
-find_package(Boost REQUIRED)
+find_package(serial REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -121,6 +121,7 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
 )
+include_directories(${serial_INCLUDE_DIRS})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -202,6 +203,6 @@ include_directories(
 
 
 add_executable(${PROJECT_NAME}_node src/buddybot_hardware_interface_node.cpp)
-target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${serial_LIBRARIES})
  add_dependencies(${PROJECT_NAME}_node ${catkin_EXPORTED_TARGETS})
 

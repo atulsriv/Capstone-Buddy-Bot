@@ -1,33 +1,30 @@
 <launch>
 
-<!-- SENSORS -->
+    <!-- SENSORS -->
 
-<!-- RP Lidar -->
-    <include file="$(find rplidar_ros)/launch/rplidar.launch"></include>
-<!-- Realsense -->
-    <include file="$(find realsense2_camera)/launch/rs_camera.launch"/>
-<!-- TF and ODOM(within diffdrive controller) -->
+    <!-- RP Lidar
+        <include file="$(find rplidar_ros)/launch/rplidar.launch"></include> -->
+    <!-- Realsense
+        <include file="$(find realsense2_camera)/launch/rs_camera.launch"/> -->
+    <!-- TF and ODOM(within diffdrive controller) -->
 
-<!-- Load URDF -->
- <param name="robot_description"
-    command="$(find xacro)/xacro --inorder '$(find buddybot_description)/urdf/buddybot.xacro'" />
+    <!-- Load URDF -->
+     <param name="robot_description"
+        command="$(find xacro)/xacro --inorder '$(find buddybot_description)/urdf/buddybot.xacro'" />
 
-<!-- Run Hardware interface -->
-    <node name="buddybot_hardware_interface" pkg="buddybot_hardware_interface" type="buddybot_hardware_interface_node" output="screen" />
+    <!-- Run Hardware interface -->
+        <node name="buddybot_hardware_interface" pkg="buddybot_hardware_interface" type="buddybot_hardware_interface_node" output="screen" />
 
-<!-- Run Controllers -->
-    <rosparam file="$(find buddybot_hardware_interface)/config/hardware.yaml" command="load"/>
-    <rosparam file="$(find buddybot_hardware_interface)/config/buddybot_diff_drive_control.yaml" command="load"/>
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller diff_controller"/>
+    <!-- Run Controllers -->
+        <rosparam file="$(find buddybot_hardware_interface)/config/hardware.yaml" command="load"/>
+        <rosparam file="$(find buddybot_hardware_interface)/config/buddybot_diff_drive_control.yaml" command="load"/>
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller diff_controller"/>
 
-<!-- Publish tf --> 
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+    <!-- Publish tf --> 
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
 
-    <remap from="/joint_states" to="/buddybot/joint_states" />
+        <remap from="/joint_states" to="/buddybot/joint_states" />
 
-</node>
-<!-- publish odom -->
-    <include file="$(find laser_scan_matcher)/demo/demo.launch">
-  </include>
+    </node>
 
 </launch> 
