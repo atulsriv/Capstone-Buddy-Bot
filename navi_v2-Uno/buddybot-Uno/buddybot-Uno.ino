@@ -8,8 +8,13 @@
 
 int gamemode = 1; // Enables the FRCmotor library
 
-int leftVel = 0;
-int rightVel = 0;
+const int rightEncA = 2;
+const int rightEncB = 4;
+const int leftEncA = 3;
+const int leftEncB = 5;
+
+volatile int leftVel = 0;
+volatile int rightVel = 0;
 int lasttime;
 
 int softstop;
@@ -34,47 +39,40 @@ FRCmotor rightMotor; //DECLARE RIGHT MOTOR CONTROLLER
 
 
 //encoder count variables
-volatile float leftCount=0, rightCount=0;
+volatile long leftCount = 0, rightCount = 0;
 
 //Interrupt events for encoders
-void leftEncoderEvent() {
-  if(digitalRead(2)==HIGH) {
-    if(digitalRead(4)==LOW) {
-      leftCount++;
-    }
-    else {
-      leftCount--;
-    }
-  } 
-  else {
-    if(digitalRead(4)==LOW) {
-      leftCount--;
-    }
-    else {
-      leftCount++;
-    }
-  }
-}
-
 void rightEncoderEvent() {
-  if(digitalRead(3)==HIGH) {
-    if(digitalRead(5)==LOW) {
+  if (digitalRead(rightEncA) == HIGH) {
+    if (digitalRead(rightEncB) == LOW) {
       rightCount++;
-    }
-    else {
+    } else {
       rightCount--;
     }
-  } 
-  else {
-    if(digitalRead(5)==LOW) {
-      rightCount--;
-    }
-    else {
+  } else {
+    if (digitalRead(rightEncB) == HIGH) {
       rightCount++;
+    } else {
+      rightCount--;
     }
   }
 }
 
+void leftEncoderEvent() {
+  if (digitalRead(leftEncA) == HIGH) {
+    if (digitalRead(leftEncB) == LOW) {
+      leftCount--;
+    } else {
+      leftCount++;
+    }
+  } else {
+    if (digitalRead(leftEncB) == HIGH) {
+      leftCount--;
+    } else {
+      leftCount++;
+    }
+  }
+}
 
 
 void setup() {
@@ -83,21 +81,24 @@ void setup() {
   leftMotor.Set(0); //SET INITIAL MOTOR VALUES TO ZERO
   rightMotor.Set(0); //(100 MAX FORWARD, -100 MAX BACK)
 
-  attachInterrupt(digitalPinToInterrupt(2),leftEncoderEvent,CHANGE);
-  attachInterrupt(digitalPinToInterrupt(3),rightEncoderEvent,CHANGE);
-  
+  attachInterrupt(digitalPinToInterrupt(rightEncA), rightEncoderEvent, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(leftEncA),leftEncoderEvent,CHANGE);
+
   Serial.begin(57600);
   lasttime = millis();
   softstop = millis();
   //Serial.print("Ready!");
 }
 
-void loop() 
+void loop()
 {
   readSerial();
   ramp();
   moveMotor();
   printSerial();
+  //char printer[100];
+  //int len = sprintf(printer,"A: %d\tb:%d\n",digitalRead(rightEncA), digitalRead(rightEncB));
+  //Serial.write(printer, len);
   delay(50);
 }
 
@@ -109,8 +110,8 @@ void readSerial()
     int obytes = strlen(buf);
     Serial.readBytes(&buf[obytes], available_bytes);
     buf[available_bytes + obytes] = '\0';
-    if(strlen(buf) > safesize){
-      memmove(buf,&buf[strlen(buf) - safesize],safesize);
+    if (strlen(buf) > safesize) {
+      memmove(buf, &buf[strlen(buf) - safesize], safesize);
       buf[safesize] = '\0';
     }
     char *s, *e;
@@ -120,33 +121,33 @@ void readSerial()
       if ((s = strrchr(buf, '[')))
       {
         sscanf(s, "[%d,%d]\n", &target_vel[0], &target_vel[1]);
-        target_vel[0] = constrain(target_vel[0],-SPEED_LIMIT,SPEED_LIMIT);
-        target_vel[1] = constrain(target_vel[1],-SPEED_LIMIT,SPEED_LIMIT);
+        target_vel[0] = constrain(target_vel[0], -SPEED_LIMIT, SPEED_LIMIT);
+        target_vel[1] = constrain(target_vel[1], -SPEED_LIMIT, SPEED_LIMIT);
       }
       memmove(buf, &e[1], strlen(&e[1]) + sizeof(char));
     }
     //softstop = millis();
   }
   //if(millis() - softstop > 5000){
-    //Serial.print("SOFTSTOP");
-    //target_vel[0] = 0;
-    //target_vel[1] = 0;
+  //Serial.print("SOFTSTOP");
+  //target_vel[0] = 0;
+  //target_vel[1] = 0;
   //}
 }
 
 
-void ramp(){
-  if(millis() - lasttime > 50){
-    if(leftVel< target_vel[0]){
+void ramp() {
+  if (millis() - lasttime > 50) {
+    if (leftVel < target_vel[0]) {
       leftVel++;
     }
-    if(leftVel> target_vel[0]){
+    if (leftVel > target_vel[0]) {
       leftVel--;
     }
-    if(rightVel< target_vel[1]){
+    if (rightVel < target_vel[1]) {
       rightVel++;
     }
-    if(rightVel> target_vel[1]){
+    if (rightVel > target_vel[1]) {
       rightVel--;
     }
     lasttime = millis();
@@ -155,12 +156,12 @@ void ramp(){
 
 void moveMotor()
 {
-  leftMotor.Set(-1*leftVel);
+  leftMotor.Set(-1 * leftVel);
   rightMotor.Set(rightVel);
 }
 
 void printSerial() {
   int len = sprintf(write_buffer, "[%ld,%ld]\n", leftCount, rightCount);
-  write_buffer[len+1] = '\0';
-  Serial.print(write_buffer);
+  write_buffer[len + 1] = '\0';
+  Serial.write(write_buffer, len + 1);
 }
