@@ -15,6 +15,8 @@
     <rosparam file="$(find buddybot_2dnav)/config/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find buddybot_2dnav)/config/global_costmap_params.yaml" command="load" /> 
     <rosparam file="$(find buddybot_2dnav)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find buddybot_2dnav)/config/dwa_local_planner_params.yaml" command="load" />
+
  </node>
 
 </launch> 
