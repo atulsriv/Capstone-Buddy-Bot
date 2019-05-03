@@ -1,9 +1,3 @@
-//////////////////////PINS//////////////////////
-/*
-  Magnometer: VIN: 3.3V  SDA: 20  SCL: 21
-  Motor - R: 9  L: 10
-*/
-///////////////////////////////////////////////
 #include "FRCmotor.h"
 
 int gamemode = 1; // Enables the FRCmotor library
@@ -45,17 +39,22 @@ volatile long leftCount = 0, rightCount = 0;
 void rightEncoderEvent() {
   if (digitalRead(rightEncA) == HIGH) {
     if (digitalRead(rightEncB) == LOW) {
+      //Serial.write("HIGH LOW");
       rightCount++;
     } else {
+      //Serial.write("HIGH HIGH");
       rightCount--;
     }
   } else {
     if (digitalRead(rightEncB) == HIGH) {
+      //Serial.write("LOW HIGH");
       rightCount++;
     } else {
+      //Serial.write("LOW LOW");
       rightCount--;
     }
   }
+  //printSerial();
 }
 
 void leftEncoderEvent() {
@@ -81,8 +80,8 @@ void setup() {
   leftMotor.Set(0); //SET INITIAL MOTOR VALUES TO ZERO
   rightMotor.Set(0); //(100 MAX FORWARD, -100 MAX BACK)
 
-  attachInterrupt(digitalPinToInterrupt(rightEncA), rightEncoderEvent, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(leftEncA),leftEncoderEvent,CHANGE);
+  attachInterrupt(digitalPinToInterrupt(rightEncA),rightEncoderEvent, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(leftEncA),leftEncoderEvent, CHANGE);
 
   Serial.begin(57600);
   lasttime = millis();

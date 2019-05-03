@@ -82,8 +82,11 @@ class buddybotHardware : public hardware_interface::RobotHW
             //cout << "LeftWheel:" << this->leftEncoder;
             //cout << "\tRightWheel:" << this->rightEncoder << endl;
 
-            joint_position_[0] = (double)this->leftEncoder;
-            joint_position_[1] = (double)this->rightEncoder;
+	          // 7410 ticks per rotation - .3048 meter wheel diameter
+
+            // Convert encoder to radians by dividing by 7410 and multiplying by 2 pi
+            joint_position_[0] = (double)((this->leftEncoder)* (2*3.14159265/7410));
+            joint_position_[1] = (double)((this->rightEncoder)* (2*3.14159265/7410));
         }
         void write() {
             // Left and Right Speed come in as rad/sec in the range of 0 to 5 m/s
