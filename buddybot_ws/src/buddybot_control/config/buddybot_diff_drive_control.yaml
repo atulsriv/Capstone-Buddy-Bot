@@ -6,7 +6,10 @@ diff_controller:
   type        : "diff_drive_controller/DiffDriveController"
   left_wheel  : 'left_wheel_joint'
   right_wheel : 'right_wheel_joint'
+  odom_frame_id:  /diff_controller/odom
   publish_rate: 50.0               # default: 50
+  wheel_seperation: 0.68
+  wheel_radius: 0.095
   pose_covariance_diagonal : [0.001, .001, 1000000., 1000000., 1000000., 1000.]
   twist_covariance_diagonal: [0.001, .001, 1000000., 1000000., 1000000., 1000.]
 
@@ -15,12 +18,12 @@ diff_controller:
   linear:
     x:
       has_velocity_limits    : true
-      max_velocity           : 5.0   # m/s
+      max_velocity           : 9.5   # m/s
       has_acceleration_limits: true
-      max_acceleration       : 3.0   # m/s^2
+      max_acceleration       : 5.0   # m/s^2
   angular:
     z:
       has_velocity_limits    : true
-      max_velocity           : 5.0   # rad/s
+      max_velocity           : 28.0   # rad/s
       has_acceleration_limits: true
-      max_acceleration       : 3.0   # rad/s^2
+      max_acceleration       : 30.0   # rad/s^2
