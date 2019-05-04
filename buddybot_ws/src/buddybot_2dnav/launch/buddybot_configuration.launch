@@ -2,9 +2,9 @@
 
     <!-- SENSORS -->
 
-    <!-- RP Lidar
+    <!-- RP Lidar -->
         <include file="$(find rplidar_ros)/launch/rplidar.launch"></include> -->
-    <!-- Realsense
+    <!-- Realsense -->
         <include file="$(find realsense2_camera)/launch/rs_camera.launch"/> -->
     <!-- TF and ODOM(within diffdrive controller) -->
 
