@@ -131,20 +131,20 @@ class buddybotHardware : public hardware_interface::RobotHW
             char toWrite [30];
 
             //Forward
-            cout << diff << endl;
+            // cout << diff << endl;
             if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", 10, 10);
+                int n = sprintf (toWrite, "[%d,%d]\n", 25, 25);
             }
             //Backwards
             if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", 10, 10);
-            }            // //Left from STOP (was going straight)
-            // if (diff < 5)
-            // {
-            //     int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
-            // }
+                int n = sprintf (toWrite, "[%d,%d]\n", -25, -25);
+            }            //STOP (was going straight)
+            if (leftSpeed == 0 & rightSpeed == 0)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", 0, 0);
+            }
             // //Right from STOP (was going straight)
             // if (diff < 5)
             // {
