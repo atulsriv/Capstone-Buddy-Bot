@@ -150,14 +150,14 @@ class buddybotHardware : public hardware_interface::RobotHW
                 int n = sprintf (toWrite, "[%d,%d]\n", 0, 0);
             }
             // Left (small urgency) bank turns
-            if (leftSpeed < rightSpeed & diff < 5)
+            if (leftSpeed < rightSpeed & diff < 30)
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", (set_velocity*.88), set_velocity);
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity -4, set_velocity+4);
             }
             // Right (small urgency) bank turns
-            if (leftSpeed > rightSpeed & diff < -5)
+            if (leftSpeed > rightSpeed & diff < -30)
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity, (set_velocity*.88));
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+4, set_velocity-4);
             }
             // Right from STOP (was going straight)
             // if (diff < 5)
