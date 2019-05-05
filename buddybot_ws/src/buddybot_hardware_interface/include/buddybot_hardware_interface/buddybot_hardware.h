@@ -130,22 +130,36 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             char toWrite [30];
 
+            // joint_position_[0] //left odom
+            // joint_position_[1] //right odom
+            int set_velocity = 25;
+            cout << "Left : " << leftSpeed << ", " << "Right: " << rightSpeed << endl;
             //Forward
-            // cout << diff << endl;
             if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", 25, 25);
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity, set_velocity);
             }
             //Backwards
             if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", -25, -25);
-            }            //STOP (was going straight)
+                int n = sprintf (toWrite, "[%d,%d]\n", -set_velocity, -set_velocity);
+            }      
+            //STOP (was going straight)
             if (leftSpeed == 0 & rightSpeed == 0)
             {
                 int n = sprintf (toWrite, "[%d,%d]\n", 0, 0);
             }
-            // //Right from STOP (was going straight)
+            // Left (small urgency) bank turns
+            if (leftSpeed < rightSpeed & diff < 5)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", (set_velocity*.88), set_velocity);
+            }
+            // Right (small urgency) bank turns
+            if (leftSpeed > rightSpeed & diff < -5)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity, (set_velocity*.88));
+            }
+            // Right from STOP (was going straight)
             // if (diff < 5)
             // {
             //     int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
