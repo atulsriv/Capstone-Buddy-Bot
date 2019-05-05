@@ -129,16 +129,16 @@ class buddybotHardware : public hardware_interface::RobotHW
             int diff = leftSpeed - rightSpeed;
 
             //Forward
+            cout << diff << endl;
             if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0) //if both are moving forwards, move forward
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", 15, 15);
+                int n = sprintf (toWrite, "[%d,%d]\n", 5, 5);
             }
             //Backwards
-            // if (diff < 5)
-            // {
-            //     int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
-            // }
-            // //Left from STOP (was going straight)
+            if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0) //if both are moving forwards, move forward
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", 5, 5);
+            }            // //Left from STOP (was going straight)
             // if (diff < 5)
             // {
             //     int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
