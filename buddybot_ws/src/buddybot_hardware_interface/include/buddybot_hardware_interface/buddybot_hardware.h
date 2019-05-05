@@ -126,13 +126,35 @@ class buddybotHardware : public hardware_interface::RobotHW
             if (rightSpeed > 100) rightSpeed = 100;
             if (rightSpeed < -100) rightSpeed = -100;
 
+            int diff = leftSpeed - rightSpeed;
+
+            //Forward
+            if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            }
+            //Backwards
+            if (diff < 5)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            }
+            //Left from STOP (was going straight)
+            if (diff < 5)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            }
+            //Right from STOP (was going straight)
+            if (diff < 5
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            }
             // The arduino motor driver accepts speeds from 0 to 100, but we dont 
             // want to run at max speed, so a limit of 50 will be applied
 
             char toWrite [30];
 
             // Create write string to arduino, multiply speed by 10 and convert to int
-            int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            // int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
          
             my_serial.write(string(toWrite));
 
