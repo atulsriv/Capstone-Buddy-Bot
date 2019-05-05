@@ -128,6 +128,8 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             int diff = leftSpeed - rightSpeed;
 
+            char toWrite [30];
+
             //Forward
             cout << diff << endl;
             if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0) //if both are moving forwards, move forward
@@ -151,7 +153,6 @@ class buddybotHardware : public hardware_interface::RobotHW
             // The arduino motor driver accepts speeds from 0 to 100, but we dont 
             // want to run at max speed, so a limit of 50 will be applied
 
-            char toWrite [30];
 
             // Create write string to arduino, multiply speed by 10 and convert to int
             // int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
