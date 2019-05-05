@@ -118,8 +118,8 @@ class buddybotHardware : public hardware_interface::RobotHW
         void write() {
             // Left and Right Speed come in as rad/sec in the range of 0 to 5 m/s
 
-            int leftSpeed = (int)joint_velocity_command_[0];
-            int rightSpeed = (int) joint_velocity_command_[1];
+            int leftSpeed = (int)(joint_velocity_command_[0]*15);
+            int rightSpeed = (int)(joint_velocity_command_[1]*15);
 
             if (leftSpeed > 100) leftSpeed = 100;
             if (leftSpeed < -100) leftSpeed = -100;
