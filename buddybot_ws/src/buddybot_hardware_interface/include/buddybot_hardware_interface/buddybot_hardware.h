@@ -17,6 +17,7 @@ using namespace boost;
 
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 using namespace std;
 
 #include <ros/ros.h>
@@ -60,6 +61,11 @@ class buddybotHardware : public hardware_interface::RobotHW
               cout << " Yes." << endl;
             else
               cout << " No." << endl;
+
+            leftEncoder = 0;
+            rightEncoder = 0;
+            lastTime = ros::Time::now().toSec();
+
         }
         ~buddybotHardware() { }
         void close() {
@@ -72,22 +78,43 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             my_serial.close();
         }
+
+
         void read(){ 
             string result;
             result = my_serial.readline();
             //cout << result;
 
-            sscanf(result.c_str(), "[%ld,%ld]", &this->leftEncoder, &this->rightEncoder);
+            size_t openBracket = result.find('[');
+            size_t comma = result.find(',');
+            size_t closedBracket = result.find(']');
 
-            //cout << "LeftWheel:" << this->leftEncoder;
-            //cout << "\tRightWheel:" << this->rightEncoder << endl;
+            long newLeft = atol(result.substr(openBracket + 1, comma - openBracket - 1).c_str());
+            long newRight = atol(result.substr(comma + 1, closedBracket - comma - 1).c_str());
 
-	          // 7410 ticks per rotation - .3048 meter wheel diameter
+            double timeDiff = ros::Time::now().toSec() - lastTime;
 
+            // Velocity is angle change over time
+
+            joint_velocity_[0] = (newLeft - leftEncoder) / timeDiff;
+            joint_velocity_[1] = (newRight - rightEncoder) / timeDiff;
+
+            leftEncoder = newLeft;
+            rightEncoder = newRight;
+
+	        // 7410 ticks per rotation - .3048 meter wheel diameter
             // Convert encoder to radians by dividing by 7410 and multiplying by 2 pi
-            joint_position_[0] = (double)((this->leftEncoder)* (2*3.14159265/7410));
-            joint_position_[1] = (double)((this->rightEncoder)* (2*3.14159265/7410));
+            joint_position_[0] = (double)((leftEncoder)* (2*3.14159265/7410));
+            joint_position_[1] = (double)((rightEncoder)* (2*3.14159265/7410));
+
+
+
+            //cout << "LeftWheel:" << joint_position_[0];
+            //cout << "\tRightWheel:" << joint_position_[1] << endl;
+
         }
+
+
         void write() {
             // Left and Right Speed come in as rad/sec in the range of 0 to 5 m/s
 
@@ -124,6 +151,7 @@ class buddybotHardware : public hardware_interface::RobotHW
         long leftEncoder, rightEncoder;
 
         serial::Serial my_serial;
+        double lastTime;
 
 };
 
