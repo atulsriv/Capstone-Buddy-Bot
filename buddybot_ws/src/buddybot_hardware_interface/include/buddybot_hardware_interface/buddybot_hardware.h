@@ -132,14 +132,14 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             //Forward
             cout << diff << endl;
-            if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0) //if both are moving forwards, move forward
+            if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", 5, 5);
+                int n = sprintf (toWrite, "[%d,%d]\n", 10, 10);
             }
             //Backwards
-            if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0) //if both are moving forwards, move forward
+            if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", 5, 5);
+                int n = sprintf (toWrite, "[%d,%d]\n", 10, 10);
             }            // //Left from STOP (was going straight)
             // if (diff < 5)
             // {
@@ -158,7 +158,6 @@ class buddybotHardware : public hardware_interface::RobotHW
             // int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
          
             my_serial.write(string(toWrite));
-
         }
 
     protected:
