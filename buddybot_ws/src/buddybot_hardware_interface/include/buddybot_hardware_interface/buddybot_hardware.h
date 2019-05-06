@@ -126,12 +126,16 @@ class buddybotHardware : public hardware_interface::RobotHW
             if (rightSpeed > 100) rightSpeed = 100;
             if (rightSpeed < -100) rightSpeed = -100;
 
-            // Set values
+            // Set velocity values
             int set_velocity = 25;
-            int diff = leftSpeed - rightSpeed;
             int level_1 = 4;
             int level_2 = 7;
             int quarter_turn_strength = 12;
+
+            // Set threshold values
+            int diff = leftSpeed - rightSpeed;
+            int turn_threshold_1 = 30;
+            int turn_threshold_2 = 60;
 
             char toWrite [30];
 
@@ -165,19 +169,19 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
             // (small urgency) bank turns
-            else if (leftSpeed < rightSpeed & diff > -30)
+            else if (leftSpeed < rightSpeed & diff > -turn_threshold_1)
             {
                 cout << "Small Left" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level_1, set_velocity+level_1);
             }
             // (medium urgency) bank turns
-            else if (leftSpeed < rightSpeed & diff < -30 & diff > -60)
+            else if (leftSpeed < rightSpeed & diff < -turn_threshold_1 & diff > -turn_threshold_2)
             {
                 cout << "Medium Left" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level_2, set_velocity+level_2);
             }
             // immediate turn
-            else if (leftSpeed < rightSpeed & diff < -60)
+            else if (leftSpeed < rightSpeed & diff < -turn_threshold_2)
             {
                 cout << "Quarter Turn Left" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", -quarter_turn_strength, quarter_turn_strength);
@@ -187,19 +191,19 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
             // (small urgency) bank turns
-            else if (leftSpeed > rightSpeed & diff < 30)
+            else if (leftSpeed > rightSpeed & diff < turn_threshold_1)
             {
                 cout << "Small Right" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level_1, set_velocity-level_1);
             }
             // (medium urgency) bank turns
-            else if (leftSpeed > rightSpeed & diff > 30 & diff < 60)
+            else if (leftSpeed > rightSpeed & diff > turn_threshold_1 & diff < turn_threshold_2)
             {
                 cout << "Medium Right" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level_2, set_velocity-level_2);
             }
             // immediate turn
-            else if (leftSpeed > rightSpeed & diff > 60)
+            else if (leftSpeed > rightSpeed & diff > turn_threshold_2)
             {
                 cout << "Quarter Turn Right" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", quarter_turn_strength, -quarter_turn_strength);
