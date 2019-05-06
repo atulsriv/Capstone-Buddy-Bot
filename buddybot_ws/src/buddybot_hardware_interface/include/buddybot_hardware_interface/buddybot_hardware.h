@@ -149,14 +149,22 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             cout << "Left : " << leftSpeed << ", Right: " << rightSpeed << ", Difference: " << diff << ", Action: ";
             //Forward
+<<<<<<< HEAD
             if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
             {
                 cout << "Forwards" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity, set_velocity);
+=======
+            cout << diff << endl;
+            if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", 10, 10);
+>>>>>>> parent of b58152b... edited moving values
             }
             //Backwards
             else if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
             {
+<<<<<<< HEAD
                 cout << "Backwards" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", -set_velocity, -set_velocity);
             }      
@@ -216,6 +224,19 @@ class buddybotHardware : public hardware_interface::RobotHW
                 cout << "No senario found..." << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
             }
+=======
+                int n = sprintf (toWrite, "[%d,%d]\n", 10, 10);
+            }            // //Left from STOP (was going straight)
+            // if (diff < 5)
+            // {
+            //     int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            // }
+            // //Right from STOP (was going straight)
+            // if (diff < 5)
+            // {
+            //     int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            // }
+>>>>>>> parent of b58152b... edited moving values
             // The arduino motor driver accepts speeds from 0 to 100, but we dont 
             // want to run at max speed, so a limit of 50 will be applied
 
