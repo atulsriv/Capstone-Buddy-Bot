@@ -117,56 +117,92 @@ class buddybotHardware : public hardware_interface::RobotHW
 
         void write() {
             // Left and Right Speed come in as rad/sec in the range of 0 to 5 m/s
-
             int leftSpeed = (int)(joint_velocity_command_[0]*15);
             int rightSpeed = (int)(joint_velocity_command_[1]*15);
 
+            // Set Speed Limits
             if (leftSpeed > 100) leftSpeed = 100;
             if (leftSpeed < -100) leftSpeed = -100;
             if (rightSpeed > 100) rightSpeed = 100;
             if (rightSpeed < -100) rightSpeed = -100;
 
+            // Set values
+            int set_velocity = 25;
             int diff = leftSpeed - rightSpeed;
+            int level_1 = 4;
+            int level_2 = 7;
 
             char toWrite [30];
 
             // joint_position_[0] //left odom
             // joint_position_[1] //right odom
-            int set_velocity = 25;
-            cout << "Left : " << leftSpeed << ", " << "Right: " << rightSpeed << endl;
+            
+            // Needs to overcome the back wheel straighting out when going from forward to backwards and back wheel pivot
+            // Somewhere between (22 - 30)/10 0speed,
+            
+
+            cout << "Left : " << leftSpeed << ", " << "Right: " << rightSpeed << ", " << "Difference: " << diff << endl;
             //Forward
             if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
             {
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity, set_velocity);
             }
             //Backwards
-            if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
+            else if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
             {
                 int n = sprintf (toWrite, "[%d,%d]\n", -set_velocity, -set_velocity);
             }      
             //STOP (was going straight)
-            if (leftSpeed == 0 & rightSpeed == 0)
+            else if (leftSpeed == 0 & rightSpeed == 0)
             {
                 int n = sprintf (toWrite, "[%d,%d]\n", 0, 0);
             }
-            // Left (small urgency) bank turns
-            if (leftSpeed < rightSpeed & diff < 30)
+
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            // (small urgency) bank turns
+            else if (leftSpeed < rightSpeed & diff > -30)
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity -4, set_velocity+4);
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level1, set_velocity+level1);
             }
-            // Right (small urgency) bank turns
-            if (leftSpeed > rightSpeed & diff < -30)
+            // (medium urgency) bank turns
+            else if (leftSpeed < rightSpeed & diff < -30 & diff > -60)
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+4, set_velocity-4);
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level_2, set_velocity+level_2);
             }
-            // Right from STOP (was going straight)
-            // if (diff < 5)
-            // {
-            //     int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
-            // }
+            // immediate turn
+            else if (leftSpeed < rightSpeed & diff < -60)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", -12, 12);
+            }
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            // (small urgency) bank turns
+            else if (leftSpeed > rightSpeed & diff < 30)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level1, set_velocity-level1);
+            }
+            // (medium urgency) bank turns
+            else if (leftSpeed > rightSpeed & diff > 30 & diff < 60)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level_2, set_velocity-level_2);
+            }
+            // immediate turn
+            else if (leftSpeed > rightSpeed & diff > 60)
+            {
+                int n = sprintf (toWrite, "[%d,%d]\n", 12, -12);
+            }
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+            else // If the command is not covered here(probably backwards turns)
+            {
+                cout << "No senario found..." << endl;
+                int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
+            }
             // The arduino motor driver accepts speeds from 0 to 100, but we dont 
             // want to run at max speed, so a limit of 50 will be applied
-
 
             // Create write string to arduino, multiply speed by 10 and convert to int
             // int n = sprintf (toWrite, "[%d,%d]\n", leftSpeed, rightSpeed);
