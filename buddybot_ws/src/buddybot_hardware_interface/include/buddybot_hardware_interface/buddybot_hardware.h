@@ -141,60 +141,69 @@ class buddybotHardware : public hardware_interface::RobotHW
             // Somewhere between (22 - 30)/10 0speed,
             
 
-            cout << "Left : " << leftSpeed << ", " << "Right: " << rightSpeed << ", " << "Difference: " << diff << endl;
+            cout << "Left : " << leftSpeed << ", Right: " << rightSpeed << ", Difference: " << diff << ", Action: ";
             //Forward
             if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
             {
+                cout << "Forwards" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity, set_velocity);
             }
             //Backwards
             else if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
             {
+                cout << "Backwards" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", -set_velocity, -set_velocity);
             }      
             //STOP (was going straight)
             else if (leftSpeed == 0 & rightSpeed == 0)
             {
+                cout << "Stop" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", 0, 0);
             }
 
 
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
             // (small urgency) bank turns
             else if (leftSpeed < rightSpeed & diff > -30)
             {
+                cout << "Small Left" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level_1, set_velocity+level_1);
             }
             // (medium urgency) bank turns
             else if (leftSpeed < rightSpeed & diff < -30 & diff > -60)
             {
+                cout << "Medium Left" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level_2, set_velocity+level_2);
             }
             // immediate turn
             else if (leftSpeed < rightSpeed & diff < -60)
             {
+                cout << "Quarter Turn Left" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", -12, 12);
             }
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
             // (small urgency) bank turns
             else if (leftSpeed > rightSpeed & diff < 30)
             {
+                cout << "Small Right" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level_1, set_velocity-level_1);
             }
             // (medium urgency) bank turns
             else if (leftSpeed > rightSpeed & diff > 30 & diff < 60)
             {
+                cout << "Medium Right" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level_2, set_velocity-level_2);
             }
             // immediate turn
             else if (leftSpeed > rightSpeed & diff > 60)
             {
+                cout << "Quarter Turn Right" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", 12, -12);
             }
-            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
             else // If the command is not covered here(probably backwards turns)
             {
