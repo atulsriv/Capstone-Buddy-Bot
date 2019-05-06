@@ -131,6 +131,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             int diff = leftSpeed - rightSpeed;
             int level_1 = 4;
             int level_2 = 7;
+            int quarter_turn_strength = 12;
 
             char toWrite [30];
 
@@ -179,7 +180,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             else if (leftSpeed < rightSpeed & diff < -60)
             {
                 cout << "Quarter Turn Left" << endl;
-                int n = sprintf (toWrite, "[%d,%d]\n", -12, 12);
+                int n = sprintf (toWrite, "[%d,%d]\n", -quarter_turn_strength, quarter_turn_strength);
             }
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Left Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
@@ -201,7 +202,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             else if (leftSpeed > rightSpeed & diff > 60)
             {
                 cout << "Quarter Turn Right" << endl;
-                int n = sprintf (toWrite, "[%d,%d]\n", 12, -12);
+                int n = sprintf (toWrite, "[%d,%d]\n", quarter_turn_strength, -quarter_turn_strength);
             }
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~// Right Forward //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
