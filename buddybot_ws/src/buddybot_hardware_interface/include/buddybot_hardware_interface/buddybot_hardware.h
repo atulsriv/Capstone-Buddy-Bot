@@ -163,7 +163,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             // (small urgency) bank turns
             else if (leftSpeed < rightSpeed & diff > -30)
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level1, set_velocity+level1);
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity-level_1, set_velocity+level_1);
             }
             // (medium urgency) bank turns
             else if (leftSpeed < rightSpeed & diff < -30 & diff > -60)
@@ -182,7 +182,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             // (small urgency) bank turns
             else if (leftSpeed > rightSpeed & diff < 30)
             {
-                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level1, set_velocity-level1);
+                int n = sprintf (toWrite, "[%d,%d]\n", set_velocity+level_1, set_velocity-level_1);
             }
             // (medium urgency) bank turns
             else if (leftSpeed > rightSpeed & diff > 30 & diff < 60)
