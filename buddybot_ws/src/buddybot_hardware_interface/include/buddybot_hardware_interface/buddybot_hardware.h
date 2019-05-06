@@ -139,10 +139,11 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             char toWrite [30];
 
+            // Might be useful for fine tuning later
             // joint_position_[0] //left odom
             // joint_position_[1] //right odom
             
-            // Needs to overcome the back wheel straighting out when going from forward to backwards and back wheel pivot
+            // Forward/Backwards movement needs to overcome the back wheel straighting out when going from forward to backwards and back wheel pivot
             // Somewhere between (22 - 30)/10 0speed,
             
 
