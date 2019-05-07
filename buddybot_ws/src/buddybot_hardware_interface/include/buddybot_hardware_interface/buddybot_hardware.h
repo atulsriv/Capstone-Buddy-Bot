@@ -130,7 +130,7 @@ class buddybotHardware : public hardware_interface::RobotHW
             int set_velocity = 25;
             int level_1 = 4;
             int level_2 = 7;
-            int quarter_turn_strength = 20;
+            int quarter_turn_strength = 27;
 
             // Set threshold values
             int diff = leftSpeed - rightSpeed;
