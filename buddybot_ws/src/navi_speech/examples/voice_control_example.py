@@ -166,7 +166,8 @@ class ASRControl(object):
                 navi_lock = 1 #locks navi again
             else:
                 pass
-
+        else:
+            print("Navi is locked. Say 'Navi' to give directions")
     def shutdown(self):
         """
         command executed after Ctrl+C is pressed
