@@ -134,8 +134,8 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             // Set threshold values
             int diff = leftSpeed - rightSpeed;
-            int turn_threshold_1 = 11;
-            int turn_threshold_2 = 18;
+            int turn_threshold_1 = 14;
+            int turn_threshold_2 = 50;
 
             char toWrite [30];
 
