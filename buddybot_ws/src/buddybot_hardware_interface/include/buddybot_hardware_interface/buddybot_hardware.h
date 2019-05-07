@@ -134,8 +134,8 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             // Set threshold values
             int diff = leftSpeed - rightSpeed;
-            int turn_threshold_1 = 30;
-            int turn_threshold_2 = 60;
+            int turn_threshold_1 = 11;
+            int turn_threshold_2 = 18;
 
             char toWrite [30];
 
@@ -149,13 +149,13 @@ class buddybotHardware : public hardware_interface::RobotHW
 
             cout << "Left : " << leftSpeed << ", Right: " << rightSpeed << ", Difference: " << diff << ", Action: ";
             //Forward
-            if ((diff < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
+            if ((abs(diff) < 10 & leftSpeed > 0 & rightSpeed > 0)) //if both are moving forwards, move forward
             {
                 cout << "Forwards" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", set_velocity, set_velocity);
             }
             //Backwards
-            else if ((diff < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
+            else if ((abs(diff) < 10 & leftSpeed < 0 & rightSpeed < 0)) //if both are moving forwards, move forward
             {
                 cout << "Backwards" << endl;
                 int n = sprintf (toWrite, "[%d,%d]\n", -set_velocity, -set_velocity);
