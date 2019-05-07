@@ -76,7 +76,7 @@ class HRControl(object):
             elif x == 3: #forward
                 navi_lock = 1
 
-                t_end = time.time() + 5
+                t_end = time.time() + 4
                 print("forward")
 
                 while time.time() - t_end < 0:
@@ -89,7 +89,7 @@ class HRControl(object):
             elif x == 1: #left
                 navi_lock = 1
                 print('quarter left turn')
-                t_end = time.time() + 2.4
+                t_end = time.time() + 3
                 while time.time() - t_end < 0:
                     twist = Twist()
                     twist.angular.z = 13
@@ -98,7 +98,7 @@ class HRControl(object):
             elif x == 2: #right
                 navi_lock = 1
                 print('quarter right turn')
-                t_end = time.time() + 2.4
+                t_end = time.time() + 3
                 while time.time() - t_end < 0:
                     twist = Twist()
                     twist.angular.z = -13
@@ -106,7 +106,7 @@ class HRControl(object):
                 data_fingers = [0, 0, 0, 0, 0]
             elif x == 4: #back
                 navi_lock = 1
-                t_end = time.time() +  5
+                t_end = time.time() +  4
                 print("back")
 
                 while time.time() - t_end < 0:
