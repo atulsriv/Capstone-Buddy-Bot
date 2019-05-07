@@ -109,7 +109,7 @@ class ASRControl(object):
                 navi_lock = 1 #locks navi again
 
             elif detected_words.data.find("forward") > -1:
-                t_end = time.time() + 1
+                t_end = time.time() + 3
                 print("forward")
 
                 while time.time() - t_end < 0:
@@ -123,7 +123,7 @@ class ASRControl(object):
 
             elif detected_words.data.find("left") > -1:
                 print('quarter left turn')
-                t_end = time.time() + 3
+                t_end = time.time() + 8
                 while time.time() - t_end < 0:
                     twist = Twist()
                     twist.angular.z = 14
@@ -133,7 +133,7 @@ class ASRControl(object):
 
             elif detected_words.data.find("right") > -1:
                 print('quarter right turn')
-                t_end = time.time() + 3
+                t_end = time.time() + 8
                 while time.time() - t_end < 0:
                     twist = Twist()
                     twist.angular.z = -14
@@ -142,7 +142,7 @@ class ASRControl(object):
                 navi_lock = 1 #locks navi again
 
             elif detected_words.data.find("back") > -1:
-                t_end = time.time() +  2
+                t_end = time.time() +  4
                 print("back")
 
                 while time.time() - t_end < 0:
