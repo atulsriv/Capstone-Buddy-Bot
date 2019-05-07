@@ -76,7 +76,7 @@ class HRControl(object):
             elif x == 3: #forward
                 navi_lock = 1
 
-                t_end = time.time() + 2
+                t_end = time.time() + 5
                 print("forward")
 
                 while time.time() - t_end < 0:
@@ -106,7 +106,7 @@ class HRControl(object):
                 data_fingers = [0, 0, 0, 0, 0]
             elif x == 4: #back
                 navi_lock = 1
-                t_end = time.time() +  2
+                t_end = time.time() +  5
                 print("back")
 
                 while time.time() - t_end < 0:
